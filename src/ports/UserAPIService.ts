@@ -36,6 +36,33 @@ class UserAPIService {
 			return Promise.reject(err);
 		}
 	}
+
+	public async loginUser(
+		username: String,
+		password: String
+	): Promise<String> {
+		try{
+			const response = await this.apiClient.post('/tokens', {
+				username: username,
+				password: password
+			});
+
+			const token = response.data["token"]
+			console.log(token)
+			localStorage.setItem('accessToken', token)
+			return Promise.resolve("Login Successful");
+		} catch(err) {
+			if (axios.isAxiosError(err)) {
+				let axiosError: AxiosError<any> = err as AxiosError<any>
+				console.error(axiosError.response)
+			}
+			else{
+				console.error(err)
+			}
+			
+			return Promise.reject(err);
+		}
+	}
 }
 
 export default new UserAPIService();
