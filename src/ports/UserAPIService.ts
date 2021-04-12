@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
 import User from '../domain/User';
 
 class UserAPIService {
@@ -6,6 +6,9 @@ class UserAPIService {
 
 	private apiClient: AxiosInstance = axios.create({
 		baseURL: this.baseAPIUrl,
+		headers: {
+			'Content-Type': 'application/json',
+		},
 		responseType: 'json',
 	});
 
@@ -14,7 +17,6 @@ class UserAPIService {
 		password: String
 	): Promise<User> {
 		try {
-			console.log(this.apiClient);
 			const response = await this.apiClient.post<User>('/users', {
 				username: username,
 				password: password,
@@ -23,7 +25,14 @@ class UserAPIService {
 			const user = response.data;
 			return Promise.resolve(user);
 		} catch (err) {
-			console.error(err);
+			if (axios.isAxiosError(err)) {
+				let axiosError: AxiosError<any> = err as AxiosError<any>
+				console.error(axiosError.response)
+			}
+			else{
+				console.error(err)
+			}
+			
 			return Promise.reject(err);
 		}
 	}
