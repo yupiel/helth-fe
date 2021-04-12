@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react'
 import UserAPIService from '../ports/UserAPIService';
 
-class Register extends React.Component {
-	state = {
+class Login extends Component {
+    state = {
 		username: '',
 		password: '',
 	};
@@ -18,19 +18,19 @@ class Register extends React.Component {
 	private submitHandler(event: React.SyntheticEvent): void {
 		event.preventDefault();
 
-		UserAPIService.registerUser(
+		UserAPIService.loginUser(
 			this.state.username,
 			this.state.password
-		).then((user) => {
-			if (user !== undefined && user.id !== undefined)
-				console.log('Account successfully created');	//TODO toast?
+		).then((responseMessage) => {
+			if (responseMessage !== undefined)
+				console.log(responseMessage);	//TODO toast?
 		});
 	}
 
-	render() {
-		return (
-			<div>
-				<p>Register new Account</p>
+    render() {
+        return (
+            <div>
+                <p>Log in: </p>
 				<form onSubmit={this.submitHandler.bind(this)}>
 					<label htmlFor='username'>Username:</label>
 					<input
@@ -39,23 +39,22 @@ class Register extends React.Component {
 						onChange={this.changeHandler.bind(this)}
 						minLength={4}
 						required={true}></input>
-					<br/>
+                    <br/>
 					<label htmlFor='password'>
 						Password:
 					</label>
 					<input
 						type='password'
 						name='password'
-						placeholder='min. 8 characters'
 						onChange={this.changeHandler.bind(this)}
 						minLength={8}
 						required={true}></input>
 
 					<input type='submit' value='Submit'></input>
 				</form>
-			</div>
-		);
-	}
+            </div>
+        )
+    }
 }
 
-export default Register;
+export default Login
