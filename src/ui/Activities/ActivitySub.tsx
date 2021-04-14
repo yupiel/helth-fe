@@ -4,8 +4,8 @@ import Activity from '../../domain/Activity'
 class ActivitySub extends Component<Activity> {
     render() {
         return (
-            <div>
-                <image></image>
+            <div data-testid="activity">
+                <img></img>
                 <p>{this.props.activityType}</p>
                 <button></button>
             </div>

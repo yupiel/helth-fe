@@ -1,38 +1,28 @@
-import axios, { AxiosError, AxiosInstance } from 'axios';
+import HttpClient from './HttpClient';
 import User from '../domain/User';
 
 class UserAPIService {
-	private baseAPIUrl: string = 'http://localhost:8080/api';
-
-	private apiClient: AxiosInstance = axios.create({
-		baseURL: this.baseAPIUrl,
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		responseType: 'json',
-	});
-
 	public async registerUser(
 		username: String,
 		password: String
 	): Promise<User> {
 		try {
-			const response = await this.apiClient.post<User>('/users', {
+			const retrievedUser = await HttpClient.post('/users', false, {
 				username: username,
 				password: password,
+			}).then((res) => {
+				const user = res.data as User;
+
+				return {
+					id: user.id,
+					username: user.username,
+					score: user.score,
+					creationDate: new Date(user.creationDate.toString()),
+				} as User;
 			});
 
-			const user = response.data;
-			return Promise.resolve(user);
+			return Promise.resolve(retrievedUser);
 		} catch (err) {
-			if (axios.isAxiosError(err)) {
-				let axiosError: AxiosError<any> = err as AxiosError<any>
-				console.error(axiosError.response)
-			}
-			else{
-				console.error(err)
-			}
-			
 			return Promise.reject(err);
 		}
 	}
@@ -41,25 +31,17 @@ class UserAPIService {
 		username: String,
 		password: String
 	): Promise<String> {
-		try{
-			const response = await this.apiClient.post('/tokens', {
+		try {
+			const response = await HttpClient.post('/tokens', false, {
 				username: username,
-				password: password
+				password: password,
 			});
 
-			const token = response.data["token"]
-			console.log(token)
-			localStorage.setItem('accessToken', token)
-			return Promise.resolve("Login Successful");
-		} catch(err) {
-			if (axios.isAxiosError(err)) {
-				let axiosError: AxiosError<any> = err as AxiosError<any>
-				console.error(axiosError.response)
-			}
-			else{
-				console.error(err)
-			}
+			const token = response.data['token'];
+			localStorage.setItem('accessToken', token);
 			
+			return Promise.resolve('Login Successful');
+		} catch (err) {
 			return Promise.reject(err);
 		}
 	}
