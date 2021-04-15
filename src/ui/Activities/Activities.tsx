@@ -1,16 +1,18 @@
-import { isSameDay, startOfWeek, addDays, endOfWeek } from 'date-fns';
+import { isSameDay } from 'date-fns';
 import Activity from '../../domain/Activity';
+import ActivityTypes from '../../domain/ActivityTypes';
 import ActivitySub from './ActivitySub';
 import ActivityAPIService from '../../ports/ActivityAPIService';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import {
 	calendarWeekForDate,
 	eachDayOfWeekForDate,
-} from '../../common/dateFormat';
+} from '../../common/DateUtils';
 
 interface ActivitiesComponentStates {
 	currentDate: Date;
 	activities: Activity[];
+	currentNewActivityFormSelection: string;
 }
 
 class Activities extends Component<{}, ActivitiesComponentStates> {
@@ -20,6 +22,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		this.state = {
 			currentDate: new Date(),
 			activities: [],
+			currentNewActivityFormSelection: '',
 		};
 	}
 
@@ -27,19 +30,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		const eachDayOfWeekCurrent = eachDayOfWeekForDate(
 			this.state.currentDate
 		);
-		ActivityAPIService.getAllActivitiesForUserBetweenDates(
-			eachDayOfWeekCurrent[0],
-			eachDayOfWeekCurrent[eachDayOfWeekCurrent.length - 1]
-		).then((activities) => {
-			this.setState({ activities: activities });
-			console.log(this.state.activities);
-		});
-	}
 
-	private buttonHandler() {
-		const eachDayOfWeekCurrent = eachDayOfWeekForDate(
-			this.state.currentDate
-		);
 		ActivityAPIService.getAllActivitiesForUserBetweenDates(
 			eachDayOfWeekCurrent[0],
 			eachDayOfWeekCurrent[eachDayOfWeekCurrent.length - 1]
@@ -78,12 +69,54 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		);
 	}
 
+	private createDropdownOptionsForActivityTypes() {
+		let returnOptions = [];
+		for (const key in ActivityTypes) {
+			returnOptions.push(
+				<option
+					key={`type_${ActivityTypes[key].typeText}`}
+					value={ActivityTypes[key].typeText}>
+					{ActivityTypes[key].typeDescription}
+				</option>
+			);
+		}
+
+		return returnOptions;
+	}
+
+	private handleSelectDropDownChange(
+		event: React.ChangeEvent<HTMLSelectElement>
+	) {
+		this.setState({
+			currentNewActivityFormSelection: event.target.value,
+		});
+	}
+
+	private handleCreateNewActivityButton() {
+		ActivityAPIService.saveNewActivityForUser(
+			this.state.currentNewActivityFormSelection,
+			this.state.currentDate
+		)
+	}
+
 	render() {
 		return (
 			<div data-testid='activities_list'>
-				<button onClick={this.buttonHandler.bind(this)}></button>
 				<p>CW {calendarWeekForDate(this.state.currentDate)}</p>
 				{this.createDayClustersForActivitiesInWeekForStateCurrentDate()}
+
+				<form onSubmit={this.handleCreateNewActivityButton.bind(this)}>
+					<label htmlFor='activity_type'>
+						What kind of Activity?
+					</label>
+					<select
+						name='activity_type'
+						onChange={this.handleSelectDropDownChange.bind(this)}>
+						{this.createDropdownOptionsForActivityTypes()}
+					</select>
+
+					<input type='submit' value='Submit'></input>
+				</form>
 			</div>
 		);
 	}
