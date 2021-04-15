@@ -1,3 +1,5 @@
+import { ChallengeStatus } from "./ChallengeStatus";
+
 interface Challenge {
 	readonly id: string;
 	readonly activityType: string;
@@ -5,7 +7,7 @@ interface Challenge {
 	readonly timesAWeekCurrent: number;
 	readonly startDate: Date;
 	readonly expirationDate: Date;
-	readonly challengeStatus: string;
+	readonly challengeStatus: ChallengeStatus;
 	readonly userID: string;
 }
 

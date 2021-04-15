@@ -1,10 +1,10 @@
-interface ActivityType {
+export interface ActivityType {
 	readonly typeText: string;
 	readonly typeDescription: string;
 	readonly typeDescriptionPast: string;
 }
 
-const ActivityTypes: { readonly [key: string]: ActivityType } = {
+export const ActivityTypes: { readonly [key: string]: ActivityType } = {
 	DRINK_WATER: {
 		typeText: 'DRINK_WATER',
 		typeDescription: 'Drink Water',

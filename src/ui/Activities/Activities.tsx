@@ -1,6 +1,6 @@
 import { isSameDay } from 'date-fns';
-import Activity from '../../domain/Activity';
-import ActivityTypes from '../../domain/ActivityTypes';
+import { Activity } from '../../domain/Activity';
+import ActivityTypes from '../../domain/ActivityType';
 import ActivitySub from './ActivitySub';
 import ActivityAPIService from '../../ports/ActivityAPIService';
 import React, { Component } from 'react';
@@ -96,7 +96,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		ActivityAPIService.saveNewActivityForUser(
 			this.state.currentNewActivityFormSelection,
 			this.state.currentDate
-		)
+		);
 	}
 
 	render() {
