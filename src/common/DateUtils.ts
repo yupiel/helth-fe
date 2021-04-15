@@ -1,22 +1,19 @@
-import { addDays, endOfWeek, startOfWeek } from 'date-fns';
+import {
+	addDays,
+	addWeeks,
+	endOfMonth,
+	endOfWeek,
+	getWeek,
+	isBefore,
+	startOfMonth,
+	startOfWeek,
+} from 'date-fns';
 
 export function dateToYMD(date: Date) {
 	var d = date.getDate();
 	var m = date.getMonth() + 1; //Month from 0 to 11
 	var y = date.getFullYear();
 	return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-}
-
-export function calendarWeekForDate(date: Date) {
-	date = new Date(
-		Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-	);
-	date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
-	const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
-	const weekNo = Math.ceil(
-		((date.valueOf() - yearStart.valueOf()) / 86400000 + 1) / 7
-	);
-	return weekNo;
 }
 
 export function eachDayOfWeekForDate(date: Date): Date[] {
@@ -33,4 +30,31 @@ export function eachDayOfWeekForDate(date: Date): Date[] {
 	}
 
 	return dayRange;
+}
+
+interface CalendarWeekStartEnd {
+	readonly calendarWeek: number;
+	readonly startingOfWeek: Date;
+	readonly endingOfWeek: Date;
+}
+
+export function eachCalendarWeekRangeInMonthForDate(
+	date: Date
+): CalendarWeekStartEnd[] {
+	let currentDate = startOfMonth(date);
+	const endDate = endOfMonth(date);
+
+	let returnValue: CalendarWeekStartEnd[] = [];
+
+	while (isBefore(currentDate, endDate)) {
+		returnValue.push({
+			calendarWeek: getWeek(currentDate, { weekStartsOn: 1 }),
+			startingOfWeek: startOfWeek(currentDate, { weekStartsOn: 1 }),
+			endingOfWeek: endOfWeek(currentDate, { weekStartsOn: 1 }),
+		});
+
+		currentDate = addWeeks(currentDate, 1);
+	}
+
+	return returnValue;
 }

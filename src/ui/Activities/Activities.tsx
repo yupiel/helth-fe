@@ -1,13 +1,10 @@
-import { isSameDay } from 'date-fns';
+import { getWeek, isSameDay } from 'date-fns';
 import { Activity } from '../../domain/Activity';
 import ActivityTypes from '../../domain/ActivityType';
 import ActivitySub from './ActivitySub';
 import ActivityAPIService from '../../ports/ActivityAPIService';
 import React, { Component } from 'react';
-import {
-	calendarWeekForDate,
-	eachDayOfWeekForDate,
-} from '../../common/DateUtils';
+import { eachDayOfWeekForDate } from '../../common/DateUtils';
 
 interface ActivitiesComponentStates {
 	currentDate: Date;
@@ -36,7 +33,6 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 			eachDayOfWeekCurrent[eachDayOfWeekCurrent.length - 1]
 		).then((activities) => {
 			this.setState({ activities: activities });
-			console.log(this.state.activities);
 		});
 	}
 
@@ -102,7 +98,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 	render() {
 		return (
 			<div data-testid='activities_list'>
-				<p>CW {calendarWeekForDate(this.state.currentDate)}</p>
+				<p>CW {getWeek(this.state.currentDate, { weekStartsOn: 1 })}</p>
 				{this.createDayClustersForActivitiesInWeekForStateCurrentDate()}
 
 				<form onSubmit={this.handleCreateNewActivityButton.bind(this)}>

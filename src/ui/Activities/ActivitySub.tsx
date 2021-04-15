@@ -5,7 +5,7 @@ class ActivitySub extends Component<Activity> {
 	render() {
 		return (
 			<div data-testid='activity'>
-				<img alt='activity type image'></img>
+				<img alt='activity type'></img>
 				<p>{this.props.activityType.typeDescriptionPast}</p>
 				<button></button>
 			</div>
