@@ -8,11 +8,9 @@ class Register extends React.Component {
 	};
 
 	private changeHandler(event: React.FormEvent<HTMLInputElement>): void {
-		console.log(event.currentTarget.name)
 		this.setState({
 			[event.currentTarget.name]: event.currentTarget.value,
 		});
-		console.log(this.state)
 	}
 
 	private submitHandler(event: React.SyntheticEvent): void {
