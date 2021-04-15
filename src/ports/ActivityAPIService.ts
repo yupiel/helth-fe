@@ -1,5 +1,5 @@
 import HttpClient from './HttpClient';
-import {Activity, fromActivityResponseObject} from '../domain/Activity';
+import {Activity, ActivityResponse, activityFromActivityResponseObject} from '../domain/Activity';
 import { dateToYMD } from '../common/DateUtils';
 
 class ActivityAPIService {
@@ -15,8 +15,8 @@ class ActivityAPIService {
 					startDate
 				)}&endDate=${dateToYMD(endDate)}`
 			).then((res) => {
-				res.data.forEach((activity: Activity) => {
-					receivedActivities.push(fromActivityResponseObject(activity));
+				res.data.forEach((activity: ActivityResponse) => {
+					receivedActivities.push(activityFromActivityResponseObject(activity));
 				});
 			});
 
@@ -35,7 +35,7 @@ class ActivityAPIService {
 				textType: activityType,
 				creationDate: dateToYMD(date),
 			}).then((res) => {
-				return fromActivityResponseObject(res.data as Activity)
+				return activityFromActivityResponseObject(res.data)
 			});
 
 			return Promise.resolve(receivedArticle);

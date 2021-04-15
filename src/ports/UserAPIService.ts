@@ -1,5 +1,5 @@
 import HttpClient from './HttpClient';
-import User from '../domain/User';
+import {User, UserResponse, userFromUserResponseObject} from '../domain/User';
 
 class UserAPIService {
 	public async registerUser(
@@ -11,14 +11,7 @@ class UserAPIService {
 				username: username,
 				password: password,
 			}).then((res) => {
-				const user = res.data as User;
-
-				return {
-					id: user.id,
-					username: user.username,
-					score: user.score,
-					creationDate: new Date(user.creationDate.toString()),
-				} as User;
+				return userFromUserResponseObject(res.data as UserResponse);
 			});
 
 			return Promise.resolve(retrievedUser);
@@ -39,7 +32,7 @@ class UserAPIService {
 
 			const token = response.data['token'];
 			localStorage.setItem('accessToken', token);
-			
+
 			return Promise.resolve('Login Successful');
 		} catch (err) {
 			return Promise.reject(err);

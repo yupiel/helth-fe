@@ -7,7 +7,14 @@ export interface Activity {
 	readonly userID: string;
 }
 
-export function fromActivityResponseObject(activityResponse: Activity): Activity {
+export interface ActivityResponse {
+	readonly id: string;
+	readonly activityType: string;
+	readonly creationDate: string;
+	readonly userID: string;
+}
+
+export function activityFromActivityResponseObject(activityResponse: ActivityResponse): Activity {
 	return {
 		id: activityResponse.id,
 		activityType: ActivityTypes[activityResponse.activityType.toString()],
