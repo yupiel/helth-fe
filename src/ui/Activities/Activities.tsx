@@ -5,6 +5,7 @@ import ActivitySub from './ActivitySub';
 import ActivityAPIService from '../../ports/ActivityAPIService';
 import React, { Component } from 'react';
 import { eachDayOfWeekForDate } from '../../common/DateUtils';
+import { isBasicStateValueValid } from '../../common/ValueUtils';
 
 interface ActivitiesComponentStates {
 	currentDate: Date;
@@ -24,6 +25,10 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 	}
 
 	componentDidMount() {
+		this.updateActivitiesInState();
+	}
+
+	private updateActivitiesInState() {
 		const eachDayOfWeekCurrent = eachDayOfWeekForDate(
 			this.state.currentDate
 		);
@@ -88,11 +93,23 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		});
 	}
 
-	private handleCreateNewActivityButton() {
-		ActivityAPIService.saveNewActivityForUser(
+	private async handleCreateNewActivityButton(
+		event: React.FormEvent<HTMLFormElement>
+	) {
+		event.preventDefault();
+
+		if (
+			!isBasicStateValueValid(this.state.currentNewActivityFormSelection)
+		) {
+			return;
+		}
+
+		await ActivityAPIService.saveNewActivityForUser(
 			this.state.currentNewActivityFormSelection,
 			this.state.currentDate
 		);
+
+		this.updateActivitiesInState();
 	}
 
 	render() {
@@ -107,7 +124,11 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 					</label>
 					<select
 						name='activity_type'
-						onChange={this.handleSelectDropDownChange.bind(this)}>
+						onChange={this.handleSelectDropDownChange.bind(this)}
+						defaultValue='DEFAULT'>
+						<option key='type_DEFAULT' value='DEFAULT'>
+							Select an activity type...
+						</option>
 						{this.createDropdownOptionsForActivityTypes()}
 					</select>
 
