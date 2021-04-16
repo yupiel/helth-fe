@@ -26,12 +26,12 @@ export interface ChallengeResponse {
 export function challengeFromChallengeResponseObject(challengeResponse: ChallengeResponse): Challenge {
 	return {
 		id: challengeResponse.id,
-		activityType: ActivityTypes[challengeResponse.activityType.toString()],
+		activityType: ActivityTypes[challengeResponse.activityType],
 		timesAWeekGoal: Number(challengeResponse.timesAWeekGoal),
 		timesAWeekCurrent: Number(challengeResponse.timesAWeekCurrent),
-		startDate: new Date(challengeResponse.startDate.toString()),
-		expirationDate: new Date(challengeResponse.startDate.toString()),
-		challengeStatus: ChallengeStatuses[challengeResponse.challengeStatus.toString()],
+		startDate: new Date(challengeResponse.startDate),
+		expirationDate: new Date(challengeResponse.expirationDate),
+		challengeStatus: ChallengeStatuses[challengeResponse.challengeStatus],
 		userID: challengeResponse.userID
 	} as Challenge
 }
