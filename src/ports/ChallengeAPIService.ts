@@ -12,21 +12,40 @@ class ChallengeAPIService {
 		endDate: Date
 	): Promise<Challenge[]> {
 		try {
-			let receivedChallenges: Challenge[] = [];
-
-			await HttpClient.get(
+			const response = await HttpClient.get(
 				`/challenges?startDate${dateToYMD(
 					startDate
 				)}&endDate=${dateToYMD(endDate)}`
-			).then((res) => {
-				res.data.forEach((challenge: ChallengeResponse) => {
-					receivedChallenges.push(
-						challengeFromChallengeResponseObject(challenge)
-					);
-				});
-			});
+			);
+
+			const receivedChallenges = response.data.map(
+				(challenge: ChallengeResponse) =>
+					challengeFromChallengeResponseObject(challenge)
+			);
 
 			return Promise.resolve(receivedChallenges);
+		} catch (err) {
+			return Promise.reject(err);
+		}
+	}
+
+	public async saveNewChallengeForUser(
+		activityType: string,
+		timesAWeekGoal: number,
+		durationInWeeks: number
+	): Promise<Challenge> {
+		try {
+			const response = await HttpClient.post('/challenges', true, {
+				activityTypeText: activityType,
+				timesAWeekGoal: timesAWeekGoal,
+				weeksDuration: durationInWeeks,
+			});
+
+			const challenge = challengeFromChallengeResponseObject(
+				response.data as ChallengeResponse
+			);
+
+			return Promise.resolve(challenge);
 		} catch (err) {
 			return Promise.reject(err);
 		}

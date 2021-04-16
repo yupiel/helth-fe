@@ -18,16 +18,7 @@ class HttpClient {
 				path,
 				authorized ? { headers: getAuthHeaderFromStorage() } : {}
 			);
-		} catch (err) {
-			if (axios.isAxiosError(err)) {
-				let axiosError: AxiosError<any> = err as AxiosError<any>;
-				console.error(axiosError.response);
-			} else {
-				console.error(err);
-			}
-
-			return Promise.reject(err);
-		}
+		} catch (err) {return handleError(err)}
 	}
 
 	public async post(
@@ -41,16 +32,7 @@ class HttpClient {
 				body,
 				authorized ? { headers: getAuthHeaderFromStorage() } : {}
 			);
-		} catch (err) {
-			if (axios.isAxiosError(err)) {
-				let axiosError: AxiosError<any> = err as AxiosError<any>;
-				console.error(axiosError.response);
-			} else {
-				console.error(err);
-			}
-
-			return Promise.reject(err);
-		}
+		} catch (err) {return handleError(err)}
 	}
 
 	public async delete(path: string): Promise<AxiosResponse> {
@@ -58,17 +40,19 @@ class HttpClient {
 			return await this.apiClient.delete(path, {
 				headers: getAuthHeaderFromStorage(),
 			});
-		} catch (err) {
-			if (axios.isAxiosError(err)) {
-				let axiosError: AxiosError<any> = err as AxiosError<any>;
-				console.error(axiosError.response);
-			} else {
-				console.error(err);
-			}
-
-			return Promise.reject(err);
-		}
+		} catch (err) {return handleError(err)}
 	}
+}
+
+function handleError(error: any): Promise<any> {
+	if (axios.isAxiosError(error)) {
+		let axiosError: AxiosError<any> = error as AxiosError<any>;
+		console.error(axiosError.response);
+	} else {
+		console.error(error);
+	}
+
+	return Promise.reject(error);
 }
 
 function getAuthHeaderFromStorage(): { Authorization: string } {

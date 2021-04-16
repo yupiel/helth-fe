@@ -12,21 +12,19 @@ class ActivityAPIService {
 		endDate: Date
 	): Promise<Activity[]> {
 		try {
-			let receivedActivities: Activity[] = [];
-
-			await HttpClient.get(
+			const response = await HttpClient.get(
 				`/activities?startDate=${dateToYMD(
 					startDate
 				)}&endDate=${dateToYMD(endDate)}`
-			).then((res) => {
-				res.data.forEach((activity: ActivityResponse) => {
-					receivedActivities.push(
-						activityFromActivityResponseObject(activity)
-					);
-				});
-			});
+			);
 
-			return Promise.resolve(receivedActivities);
+			const activities = response.data.map(
+				(activity: ActivityResponse) => {
+					return activityFromActivityResponseObject(activity);
+				}
+			);
+
+			return Promise.resolve(activities);
 		} catch (err) {
 			return Promise.reject(err);
 		}
@@ -37,14 +35,14 @@ class ActivityAPIService {
 		date: Date
 	): Promise<Activity> {
 		try {
-			const receivedArticle = await HttpClient.post('/activities', true, {
+			const response = await HttpClient.post('/activities', true, {
 				textType: activityType,
 				creationDate: dateToYMD(date),
-			}).then((res) => {
-				return activityFromActivityResponseObject(res.data);
 			});
 
-			return Promise.resolve(receivedArticle);
+			const activity = activityFromActivityResponseObject(response.data);
+
+			return Promise.resolve(activity);
 		} catch (err) {
 			return Promise.reject(err);
 		}
