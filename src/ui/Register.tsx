@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import UserAPIService from '../ports/UserAPIService';
 
 class Register extends React.Component {
@@ -21,36 +22,66 @@ class Register extends React.Component {
 			this.state.password
 		).then((user) => {
 			if (user !== undefined && user.id !== undefined)
-				console.log('Account successfully created');	//TODO toast?
+				console.log('Account successfully created'); //TODO toast?
 		});
 	}
 
 	render() {
 		return (
-			<div>
-				<p>Register new Account</p>
-				<form onSubmit={this.submitHandler.bind(this)}>
-					<label htmlFor='username'>Username:</label>
-					<input
-						type='text'
-						name='username'
-						onChange={this.changeHandler.bind(this)}
-						minLength={4}
-						required={true}></input>
-					<br/>
-					<label htmlFor='password'>
-						Password:
-					</label>
-					<input
-						type='password'
-						name='password'
-						placeholder='min. 8 characters'
-						onChange={this.changeHandler.bind(this)}
-						minLength={8}
-						required={true}></input>
+			<div className='hero is-fullheight is-fullpage'>
+				<div className='hero-body columns is-vcentered is-centered'>
+					<div className='column is-one-quarter'>
+						<form
+							className='box'
+							onSubmit={this.submitHandler.bind(this)}>
+							<p className='title is-4'>Register</p>
+							<div className='field'>
+								<label className='label' htmlFor='username'>
+									Username:
+								</label>
+								<div className='control'>
+									<input
+										className='input'
+										type='text'
+										name='username'
+										onChange={this.changeHandler.bind(this)}
+										minLength={4}
+										required={true}></input>
+								</div>
+							</div>
 
-					<input type='submit' value='Submit'></input>
-				</form>
+							<div className='field'>
+								<label className='label' htmlFor='password'>
+									Password:
+								</label>
+								<div className='control'>
+									<input
+										className='input'
+										type='password'
+										name='password'
+										placeholder='min. 8 characters'
+										onChange={this.changeHandler.bind(this)}
+										minLength={8}
+										required={true}></input>
+								</div>
+
+								<div className='level'>
+									<div className='level-left'>
+										<p className='subtitle is-6 mt-5'>
+											<Link to='/login'>
+												Already have an Account? Login!
+											</Link>
+										</p>
+									</div>
+									<input
+										className='level-right button is-link mt-5'
+										type='submit'
+										value='Submit'></input>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 		);
 	}

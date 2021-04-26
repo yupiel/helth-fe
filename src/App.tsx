@@ -1,9 +1,10 @@
+import './App.sass';
 import Register from './ui/Register';
 import Login from './ui/Login';
-import Activities from './ui/Activities/Activities'
-import Challenges from './ui/Challenges/Challenges'
+import Activities from './ui/Activities/Activities';
+import Challenges from './ui/Challenges/Challenges';
 //@ts-ignore
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
 	return (

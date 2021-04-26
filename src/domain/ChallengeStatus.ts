@@ -10,10 +10,10 @@ export const ChallengeStatuses: { readonly [key: string]: ChallengeStatus } = {
 	},
 	SUCCEEDED: {
 		statusText: 'SUCCEDED',
-		statusDescription: 'SUCCEEDED'
+		statusDescription: 'Succeeded'
 	},
 	FAILED: {
 		statusText: 'FAILED',
-		statusDescription: 'FAILED'
+		statusDescription: 'Failed'
 	},
 };

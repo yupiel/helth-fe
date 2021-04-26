@@ -1,4 +1,4 @@
-import { isSameWeek } from 'date-fns';
+import { getWeek, isSameWeek } from 'date-fns';
 import React, { Component } from 'react';
 import { eachCalendarWeekRangeInMonthForDate } from '../../common/DateUtils';
 import { isBasicStateValueValid } from '../../common/ValueUtils';
@@ -6,6 +6,8 @@ import { Challenge } from '../../domain/Challenge';
 import ChallengeSub from './ChallengesSub';
 import ChallengeAPIService from '../../ports/ChallengeAPIService';
 import ActivityTypes from '../../domain/ActivityType';
+import { isAuthTokenValid } from '../../common/AuthUtils';
+import { Redirect } from 'react-router-dom';
 
 interface NewChallengeCreationValues {
 	activityType: string;
@@ -37,7 +39,7 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 	}
 
 	componentDidMount() {
-		this.updateChallengesInState();
+		if (isAuthTokenValid()) this.updateChallengesInState();
 	}
 
 	private updateChallengesInState() {
@@ -71,8 +73,13 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 					console.log(filtered);
 					return (
 						<div
+							className='row'
 							data-testid='challenges_list_week'
 							key={`calendar_week_${calendarWeekObject.calendarWeek.toString()}`}>
+							<p className='subtitle is-6 mt-6'>{`Started in CW ${getWeek(
+								filtered[0].startDate,
+								{ weekStartsOn: 1 }
+							)}`}</p>
 							{filtered.map((challenge, index) => (
 								<ChallengeSub
 									{...challenge}
@@ -171,48 +178,77 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 	}
 
 	render() {
+		if (!isAuthTokenValid()) {
+			return <Redirect to='/login' />;
+		}
 		return (
-			<div data-testid='challenges_list'>
-				<p>{this.state.currentDate.getFullYear()}</p>
-				<button>Filter</button>
-				{this.createStartWeekClustersForChallengesInMonthForStateCurrentDate()}
-
-				<form
-					onSubmit={this.handleSubmitNewChallengeCreationForm.bind(
-						this
-					)}>
-					<select
-						name='new_challenge_activity_type'
-						defaultValue='DEFAULT'
-						onChange={this.handleNewChallengeActivityTypeChange.bind(
-							this
-						)}>
-						<option key='type_DEFAULT' value='DEFAULT'>
-							Select the target activity of your challenge...
-						</option>
-						{this.createDropwDownOptionsForNewChallengeActivityTypes()}
-					</select>
-					<br />
-					<input
-						type='text'
-						name='new_challenge_weekly_goal'
-						placeholder='What is your weekly goal?'
-						required={true}
-						onChange={this.handleNewChallengeWeeklyGoalChange.bind(
-							this
-						)}></input>
-					<br />
-					<input
-						type='text'
-						name='new_challenge_amount_of_weeks'
-						placeholder='How many weeks should the challenge last?'
-						required={true}
-						onChange={this.handleNewChallengeAmountOfWeeksChange.bind(
-							this
-						)}></input>
-					<br />
-					<input type='submit' value='Submit'></input>
-				</form>
+			<div>
+				<div className='columns is-centered'>
+					<div
+						className='column is-two-fifths'
+						data-testid='challenges_list'>
+						<div className='level'>
+							<p className='title is-1 level-left'>
+								{this.state.currentDate.getFullYear()}
+							</p>
+							<button className='button level-right'>
+								Filter
+							</button>
+						</div>
+						<div className='rows'>
+							{this.createStartWeekClustersForChallengesInMonthForStateCurrentDate()}
+						</div>
+					</div>
+				</div>
+				<div className='columns'>
+					<div className='column is-three-quarters'></div>
+					<div className='column is-one-fifth'>
+						<form
+							className='box field'
+							onSubmit={this.handleSubmitNewChallengeCreationForm.bind(
+								this
+							)}>
+							<select
+								className='select control'
+								name='new_challenge_activity_type'
+								defaultValue='DEFAULT'
+								onChange={this.handleNewChallengeActivityTypeChange.bind(
+									this
+								)}>
+								<option key='type_DEFAULT' value='DEFAULT'>
+									Select the target activity of your
+									challenge...
+								</option>
+								{this.createDropwDownOptionsForNewChallengeActivityTypes()}
+							</select>
+							<br />
+							<input
+								className='input control mt-3'
+								type='text'
+								name='new_challenge_weekly_goal'
+								placeholder='What is your weekly goal?'
+								required={true}
+								onChange={this.handleNewChallengeWeeklyGoalChange.bind(
+									this
+								)}></input>
+							<br />
+							<input
+								className='input control mt-3'
+								type='text'
+								name='new_challenge_amount_of_weeks'
+								placeholder='How many weeks should the challenge last?'
+								required={true}
+								onChange={this.handleNewChallengeAmountOfWeeksChange.bind(
+									this
+								)}></input>
+							<br />
+							<input
+								className='button is-link control mt-5'
+								type='submit'
+								value='Submit'></input>
+						</form>
+					</div>
+				</div>
 			</div>
 		);
 	}

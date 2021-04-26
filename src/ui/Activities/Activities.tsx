@@ -1,4 +1,4 @@
-import { getWeek, isSameDay } from 'date-fns';
+import { format, getWeek, getYear, isSameDay } from 'date-fns';
 import { Activity } from '../../domain/Activity';
 import ActivityTypes from '../../domain/ActivityType';
 import ActivitySub from './ActivitySub';
@@ -6,6 +6,8 @@ import ActivityAPIService from '../../ports/ActivityAPIService';
 import React, { Component } from 'react';
 import { eachDayOfWeekForDate } from '../../common/DateUtils';
 import { isBasicStateValueValid } from '../../common/ValueUtils';
+import { isAuthTokenValid } from '../../common/AuthUtils';
+import { Redirect } from 'react-router';
 
 interface ActivitiesComponentStates {
 	currentDate: Date;
@@ -25,7 +27,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 	}
 
 	componentDidMount() {
-		this.updateActivitiesInState();
+		if (isAuthTokenValid()) this.updateActivitiesInState();
 	}
 
 	private updateActivitiesInState() {
@@ -54,8 +56,14 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 					//map each matching one to an ActivitSub component
 					return (
 						<div
+							className='row'
 							data-testid='activities_list_day'
 							key={`week_day_${index.toString()}`}>
+							<p className='subtitle is-6 mt-6'>{`${format(
+								filtered[0].creationDate,
+								'MMMM do',
+								{ weekStartsOn: 1 }
+							)}`}</p>
 							{filtered.map((activity, index) => (
 								<ActivitySub
 									{...activity}
@@ -113,27 +121,58 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 	}
 
 	render() {
+		if (!isAuthTokenValid()) {
+			return <Redirect to='/login' />;
+		}
 		return (
-			<div data-testid='activities_list'>
-				<p>CW {getWeek(this.state.currentDate, { weekStartsOn: 1 })}</p>
-				{this.createDayClustersForActivitiesInWeekForStateCurrentDate()}
-
-				<form onSubmit={this.handleCreateNewActivityButton.bind(this)}>
-					<label htmlFor='activity_type'>
-						What kind of Activity?
-					</label>
-					<select
-						name='activity_type'
-						onChange={this.handleSelectDropDownChange.bind(this)}
-						defaultValue='DEFAULT'>
-						<option key='type_DEFAULT' value='DEFAULT'>
-							Select an activity type...
-						</option>
-						{this.createDropdownOptionsForActivityTypes()}
-					</select>
-
-					<input type='submit' value='Submit'></input>
-				</form>
+			<div>
+				<div className='columns is-centered'>
+					<div
+						className='column is-two-fifths'
+						data-testid='activities_list'>
+						<p className='title is-1'>
+							{`${getYear(this.state.currentDate)}`}
+						</p>
+						<p className='subtitle'>
+							{`CW ${getWeek(this.state.currentDate, {
+								weekStartsOn: 1,
+							})}`}
+						</p>
+						<div className='rows'>
+							{this.createDayClustersForActivitiesInWeekForStateCurrentDate()}
+						</div>
+					</div>
+				</div>
+				<div className='columns'>
+					<div className='column is-three-quarters'></div>
+					<div className='column is-one-fifth'>
+						<form
+							className='box field'
+							onSubmit={this.handleCreateNewActivityButton.bind(
+								this
+							)}>
+							<label className='label' htmlFor='activity_type'>
+								Add New Activity
+							</label>
+							<select
+								className='select control'
+								name='activity_type'
+								onChange={this.handleSelectDropDownChange.bind(
+									this
+								)}
+								defaultValue='DEFAULT'>
+								<option key='type_DEFAULT' value='DEFAULT'>
+									Select an activity type...
+								</option>
+								{this.createDropdownOptionsForActivityTypes()}
+							</select>
+							<input
+								className='button is-link control ml-5'
+								type='submit'
+								value='Submit'></input>
+						</form>
+					</div>
+				</div>
 			</div>
 		);
 	}

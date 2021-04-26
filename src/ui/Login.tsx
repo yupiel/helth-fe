@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import UserAPIService from '../ports/UserAPIService';
 
 class Login extends Component {
-    state = {
+	state = {
 		username: '',
 		password: '',
 	};
@@ -16,43 +17,71 @@ class Login extends Component {
 	private submitHandler(event: React.SyntheticEvent): void {
 		event.preventDefault();
 
-		UserAPIService.loginUser(
-			this.state.username,
-			this.state.password
-		).then((responseMessage) => {
-			if (responseMessage !== undefined)
-				console.log(responseMessage);	//TODO toast?
-		});
+		UserAPIService.loginUser(this.state.username, this.state.password).then(
+			(responseMessage) => {
+				if (responseMessage !== undefined) console.log(responseMessage); //TODO toast?
+			}
+		);
 	}
 
-    render() {
-        return (
-            <div>
-                <p>Log in: </p>
-				<form onSubmit={this.submitHandler.bind(this)}>
-					<label htmlFor='username'>Username:</label>
-					<input
-						type='text'
-						name='username'
-						onChange={this.changeHandler.bind(this)}
-						minLength={4}
-						required={true}></input>
-                    <br/>
-					<label htmlFor='password'>
-						Password:
-					</label>
-					<input
-						type='password'
-						name='password'
-						onChange={this.changeHandler.bind(this)}
-						minLength={8}
-						required={true}></input>
+	render() {
+		return (
+			<div className='hero is-fullheight is-fullpage'>
+				<div className='hero-body columns is-vcentered is-centered'>
+					<div className='column is-one-quarter'>
+						<form
+							className='box'
+							onSubmit={this.submitHandler.bind(this)}>
+							<p className='title is-4'>Login</p>
+							<div className='field'>
+								<label className='label' htmlFor='username'>
+									Username:
+								</label>
+								<div className='control'>
+									<input
+										className='input'
+										type='text'
+										name='username'
+										onChange={this.changeHandler.bind(this)}
+										minLength={4}
+										required={true}></input>
+								</div>
+							</div>
 
-					<input type='submit' value='Submit'></input>
-				</form>
-            </div>
-        )
-    }
+							<div className='field'>
+								<label className='label' htmlFor='password'>
+									Password:
+								</label>
+								<div className='control'>
+									<input
+										className='input'
+										type='password'
+										name='password'
+										onChange={this.changeHandler.bind(this)}
+										minLength={8}
+										required={true}></input>
+								</div>
+							</div>
+
+							<div className='level'>
+								<div className='level-left'>
+									<p className='subtitle is-6 mt-5'>
+										<Link to='/register'>
+											New? Register Here.
+										</Link>
+									</p>
+								</div>
+								<input
+									className='level-right button is-link mt-5'
+									type='submit'
+									value='Submit'></input>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
 
-export default Login
+export default Login;
