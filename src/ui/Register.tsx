@@ -1,8 +1,13 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import UserAPIService from '../ports/UserAPIService';
+import { withHistoryHook } from '../common/HocUtils';
 
-class Register extends React.Component {
+interface RegisterProps {
+	history: RouteComponentProps['history'];
+}
+
+class Register extends React.Component<RegisterProps> {
 	state = {
 		username: '',
 		password: '',
@@ -22,7 +27,10 @@ class Register extends React.Component {
 			this.state.password
 		).then((user) => {
 			if (user !== undefined && user.id !== undefined) {
-				console.log('Account successfully created'); //TODO toast?
+				console.log('Account successfully created'); //TODO toast? delay?
+
+				//redirect to login page on successful register
+				this.props.history.push('/login');
 			}
 		});
 	}
@@ -88,4 +96,4 @@ class Register extends React.Component {
 	}
 }
 
-export default Register;
+export default withHistoryHook(Register);

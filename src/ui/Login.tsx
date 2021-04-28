@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import UserAPIService from '../ports/UserAPIService';
+import { withHistoryHook } from '../common/HocUtils';
 
-class Login extends Component {
+interface LoginProps {
+	history: RouteComponentProps['history'];
+}
+
+class Login extends Component<LoginProps> {
 	state = {
 		username: '',
 		password: '',
@@ -19,8 +24,13 @@ class Login extends Component {
 
 		UserAPIService.loginUser(this.state.username, this.state.password).then(
 			(responseMessage) => {
-				if (responseMessage !== undefined) { 
+				if (responseMessage !== undefined) {
 					console.log(responseMessage); //TODO toast?
+
+					if (responseMessage === 'Login Successful') {
+						//redirect on successful login
+						this.props.history.push('/');
+					}
 				}
 			}
 		);
@@ -86,4 +96,4 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default withHistoryHook(Login);
