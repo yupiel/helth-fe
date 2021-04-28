@@ -1,7 +1,7 @@
 import { differenceInCalendarWeeks, getWeek } from 'date-fns';
 import { Component } from 'react';
-import { getIconForActivityType } from '../../common/IconUtils';
 import { Challenge } from '../../domain/Challenge';
+import ActivityIcon from '../ActivityIcon'
 
 class ChallengeSub extends Component<Challenge> {
 	private getColorCSSClassForChallengeStatus(
@@ -29,7 +29,7 @@ class ChallengeSub extends Component<Challenge> {
 					)}`}
 					data-testid='challenge'>
 					<div className='level-left'>
-						{getIconForActivityType(this.props.activityType)}
+						<ActivityIcon {...this.props.activityType} />
 						<p className='title is-5 ml-3'>
 							{this.props.activityType.typeDescription}
 						</p>

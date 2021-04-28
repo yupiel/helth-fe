@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Activity } from '../../domain/Activity';
-import { getIconForActivityType } from '../../common/IconUtils';
+import ActivityIcon from '../ActivityIcon';
 
 class ActivitySub extends Component<Activity> {
 	render() {
@@ -8,7 +8,7 @@ class ActivitySub extends Component<Activity> {
 			<div className='field row'>
 				<div className='box level is-grouped' data-testid='activity'>
 					<div className='level-left'>
-						{getIconForActivityType(this.props.activityType)}
+						<ActivityIcon {...this.props.activityType} />
 						
 						<p className='title is-5 ml-3'>
 							{this.props.activityType.typeDescriptionPast}
