@@ -1,4 +1,5 @@
 import './App.sass';
+import Navbar from './ui/Navbar'
 import Register from './ui/Register';
 import Login from './ui/Login';
 import Activities from './ui/Activities/Activities';
@@ -10,6 +11,7 @@ function App() {
 	return (
 		<Router>
 			<div>
+				<Navbar />
 
 				<Switch>
 					<Route exact path='/register'>
