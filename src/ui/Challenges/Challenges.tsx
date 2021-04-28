@@ -20,6 +20,8 @@ interface ChallengesComponentStates {
 	coveredCalendarWeeks: number[];
 	challenges: Challenge[];
 	currentNewChallengeFormSelections: NewChallengeCreationValues;
+	newChallengeDialogueButtonText: string;
+	newChallengeDialogueVisible: boolean;
 }
 
 class Challenges extends Component<{}, ChallengesComponentStates> {
@@ -35,6 +37,8 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 				weeklyGoal: 0,
 				amountOfWeeks: 0,
 			},
+			newChallengeDialogueButtonText: '+',
+			newChallengeDialogueVisible: false,
 		};
 	}
 
@@ -177,12 +181,28 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 		this.updateChallengesInState();
 	}
 
+	private handleShowNewChallengeDialogueButton(event: React.SyntheticEvent) {
+		event.preventDefault();
+
+		if (this.state.newChallengeDialogueVisible) {
+			this.setState({
+				newChallengeDialogueVisible: false,
+				newChallengeDialogueButtonText: '+',
+			});
+		} else {
+			this.setState({
+				newChallengeDialogueVisible: true,
+				newChallengeDialogueButtonText: 'x',
+			});
+		}
+	}
+
 	render() {
 		if (!isAuthTokenValid()) {
 			return <Redirect to='/login' />;
 		}
 		return (
-			<div>
+			<div className='is-fullpage'>
 				<div className='columns is-centered'>
 					<div
 						className='column is-two-fifths'
@@ -200,53 +220,98 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 						</div>
 					</div>
 				</div>
-				<div className='columns'>
+				<div className='columns is-sticky is-bottom-right is-vcentered mr-3'>
 					<div className='column is-three-quarters'></div>
-					<div className='column is-one-fifth'>
+					<div
+						className={`column is-one-fifth ${
+							this.state.newChallengeDialogueVisible
+								? ''
+								: 'is-invisible'
+						}`}>
 						<form
-							className='box field'
+							className='box'
 							onSubmit={this.handleSubmitNewChallengeCreationForm.bind(
 								this
 							)}>
-							<select
-								className='select control'
-								name='new_challenge_activity_type'
-								defaultValue='DEFAULT'
-								onChange={this.handleNewChallengeActivityTypeChange.bind(
-									this
-								)}>
-								<option key='type_DEFAULT' value='DEFAULT'>
-									Select the target activity of your
-									challenge...
-								</option>
-								{this.createDropwDownOptionsForNewChallengeActivityTypes()}
-							</select>
-							<br />
+							<p className='title is-5'>New Challenge</p>
+
+							<div className='field'>
+								<label
+									className='label'
+									htmlFor='new_challenge_activity_type'>
+									Target Activity:
+								</label>
+								<div className='control select'>
+									<select
+										name='new_challenge_activity_type'
+										defaultValue='DEFAULT'
+										onChange={this.handleNewChallengeActivityTypeChange.bind(
+											this
+										)}>
+										<option
+											key='type_DEFAULT'
+											value='DEFAULT'>
+											Select an Activity Type...
+										</option>
+										{this.createDropwDownOptionsForNewChallengeActivityTypes()}
+									</select>
+								</div>
+							</div>
+
+							<div className='field'>
+								<label
+									className='label'
+									htmlFor='new_challenge_weekly_goal'>
+									Weekly Goal Amount:
+								</label>
+								<div className='control'>
+									<input
+										className='input mt-3'
+										type='number'
+										min='1'
+										max='21'
+										name='new_challenge_weekly_goal'
+										placeholder='max. 21'
+										required={true}
+										onChange={this.handleNewChallengeWeeklyGoalChange.bind(
+											this
+										)}></input>
+								</div>
+							</div>
+
+							<div className='field'>
+								<label
+									className='label'
+									htmlFor='new_challenge_amount_of_weeks'>
+									Amount of Weeks:
+								</label>
+								<div className='control'>
+									<input
+										className='input mt-3'
+										type='number'
+										min='1'
+										name='new_challenge_amount_of_weeks'
+										required={true}
+										onChange={this.handleNewChallengeAmountOfWeeksChange.bind(
+											this
+										)}></input>
+								</div>
+							</div>
+							
 							<input
-								className='input control mt-3'
-								type='text'
-								name='new_challenge_weekly_goal'
-								placeholder='What is your weekly goal?'
-								required={true}
-								onChange={this.handleNewChallengeWeeklyGoalChange.bind(
-									this
-								)}></input>
-							<br />
-							<input
-								className='input control mt-3'
-								type='text'
-								name='new_challenge_amount_of_weeks'
-								placeholder='How many weeks should the challenge last?'
-								required={true}
-								onChange={this.handleNewChallengeAmountOfWeeksChange.bind(
-									this
-								)}></input>
-							<br />
-							<input
-								className='button is-link control mt-5'
+								className='button is-link mt-5'
 								type='submit'
 								value='Submit'></input>
 						</form>
+					</div>
+					<div className='column is-1'>
+						<button
+							onClick={this.handleShowNewChallengeDialogueButton.bind(
+								this
+							)}
+							className='button is-dark is-medium'>
+							{this.state.newChallengeDialogueButtonText}
+						</button>
 					</div>
 				</div>
 			</div>

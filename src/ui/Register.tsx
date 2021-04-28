@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import UserAPIService from '../ports/UserAPIService';
 
 class Register extends React.Component {
@@ -21,8 +21,9 @@ class Register extends React.Component {
 			this.state.username,
 			this.state.password
 		).then((user) => {
-			if (user !== undefined && user.id !== undefined)
+			if (user !== undefined && user.id !== undefined) {
 				console.log('Account successfully created'); //TODO toast?
+			}
 		});
 	}
 

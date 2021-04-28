@@ -1,5 +1,6 @@
 import { differenceInCalendarWeeks, getWeek } from 'date-fns';
 import { Component } from 'react';
+import { getIconForActivityType } from '../../common/IconUtils';
 import { Challenge } from '../../domain/Challenge';
 
 class ChallengeSub extends Component<Challenge> {
@@ -8,23 +9,30 @@ class ChallengeSub extends Component<Challenge> {
 	): string {
 		switch (challengeStatus) {
 			case 'IN_PROGRESS':
-				return 'in_progress';
+				return '';
 			case 'SUCCEEDED':
-				return 'succeeded';
+				return 'has-background-success-light';
 			case 'FAILED':
-				return 'failed';
+				return 'has-background-danger-light';
+
 			default:
-				return 'ERROR';
+				return 'has-background-danger-dark';
 		}
 	}
 
 	render() {
 		return (
 			<div className='field row'>
-				<div className='box is-grouped level' data-testid='challenge'>
+				<div
+					className={`box is-grouped level ${this.getColorCSSClassForChallengeStatus(
+						this.props.challengeStatus.statusText
+					)}`}
+					data-testid='challenge'>
 					<div className='level-left'>
-						<img alt='challenge activity type'></img>
-						<p className='title is-5'>{this.props.activityType.typeDescription}</p>
+						{getIconForActivityType(this.props.activityType)}
+						<p className='title is-5 ml-3'>
+							{this.props.activityType.typeDescription}
+						</p>
 					</div>
 					<div className='level-right level-item'>
 						<div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import UserAPIService from '../ports/UserAPIService';
 
 class Login extends Component {
@@ -19,7 +19,9 @@ class Login extends Component {
 
 		UserAPIService.loginUser(this.state.username, this.state.password).then(
 			(responseMessage) => {
-				if (responseMessage !== undefined) console.log(responseMessage); //TODO toast?
+				if (responseMessage !== undefined) { 
+					console.log(responseMessage); //TODO toast?
+				}
 			}
 		);
 	}
@@ -67,7 +69,7 @@ class Login extends Component {
 								<div className='level-left'>
 									<p className='subtitle is-6 mt-5'>
 										<Link to='/register'>
-											New? Register Here.
+											New? Register Here!
 										</Link>
 									</p>
 								</div>

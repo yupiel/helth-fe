@@ -13,6 +13,8 @@ interface ActivitiesComponentStates {
 	currentDate: Date;
 	activities: Activity[];
 	currentNewActivityFormSelection: string;
+	newActivityDialogueButtonText: string;
+	newActivityDialogueVisible: boolean;
 }
 
 class Activities extends Component<{}, ActivitiesComponentStates> {
@@ -23,6 +25,8 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 			currentDate: new Date(),
 			activities: [],
 			currentNewActivityFormSelection: '',
+			newActivityDialogueButtonText: '+',
+			newActivityDialogueVisible: false,
 		};
 	}
 
@@ -120,12 +124,28 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		this.updateActivitiesInState();
 	}
 
+	private handleShowNewActivityDialogueButton(event: React.SyntheticEvent) {
+		event.preventDefault();
+
+		if (this.state.newActivityDialogueVisible) {
+			this.setState({
+				newActivityDialogueVisible: false,
+				newActivityDialogueButtonText: '+',
+			});
+		} else {
+			this.setState({
+				newActivityDialogueVisible: true,
+				newActivityDialogueButtonText: 'x',
+			});
+		}
+	}
+
 	render() {
 		if (!isAuthTokenValid()) {
 			return <Redirect to='/login' />;
 		}
 		return (
-			<div>
+			<div className='is-fullpage'>
 				<div className='columns is-centered'>
 					<div
 						className='column is-two-fifths'
@@ -143,34 +163,49 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 						</div>
 					</div>
 				</div>
-				<div className='columns'>
+
+				<div className='columns is-sticky is-bottom-right is-vcentered mr-3'>
 					<div className='column is-three-quarters'></div>
-					<div className='column is-one-fifth'>
+					<div
+						className={`column is-one-fifth ${
+							this.state.newActivityDialogueVisible
+								? ''
+								: 'is-invisible'
+						}`}>
 						<form
-							className='box field'
+							className='box'
 							onSubmit={this.handleCreateNewActivityButton.bind(
 								this
 							)}>
-							<label className='label' htmlFor='activity_type'>
-								Add New Activity
-							</label>
-							<select
-								className='select control'
-								name='activity_type'
-								onChange={this.handleSelectDropDownChange.bind(
-									this
-								)}
-								defaultValue='DEFAULT'>
-								<option key='type_DEFAULT' value='DEFAULT'>
-									Select an activity type...
-								</option>
-								{this.createDropdownOptionsForActivityTypes()}
-							</select>
+							<p className='title is-5'>New Activity</p>
+							<div className='control select'>
+								<select
+									name='activity_type'
+									onChange={this.handleSelectDropDownChange.bind(
+										this
+									)}
+									defaultValue='DEFAULT'>
+									<option key='type_DEFAULT' value='DEFAULT'>
+										Select an activity type...
+									</option>
+									{this.createDropdownOptionsForActivityTypes()}
+								</select>
+							</div>
 							<input
-								className='button is-link control ml-5'
+								className='button is-link'
 								type='submit'
 								value='Submit'></input>
 						</form>
+					</div>
+
+					<div className='column is-1'>
+						<button
+							onClick={this.handleShowNewActivityDialogueButton.bind(
+								this
+							)}
+							className='button is-dark is-medium'>
+							{this.state.newActivityDialogueButtonText}
+						</button>
 					</div>
 				</div>
 			</div>

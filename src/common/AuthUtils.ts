@@ -35,14 +35,14 @@ export function isAuthTokenValid(): boolean {
 
 	if (
 		isAfter(
+			new Date(),
 			new Date(
 				decodedPayload.exp.date.year,
 				decodedPayload.exp.date.month,
 				decodedPayload.exp.date.day,
 				decodedPayload.exp.time.hour,
 				decodedPayload.exp.time.minute
-			),
-			new Date()
+			)
 		)
 	) {
 		localStorage.removeItem('accessToken');
