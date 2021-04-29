@@ -5,6 +5,7 @@ import { withHistoryHook } from '../common/HocUtils';
 
 interface RegisterProps {
 	history: RouteComponentProps['history'];
+	//redirectTo: (path: string) => void;
 }
 
 class Register extends React.Component<RegisterProps> {
@@ -31,13 +32,14 @@ class Register extends React.Component<RegisterProps> {
 
 				//redirect to login page on successful register
 				this.props.history.push('/login');
+				//this.props.redirectTo('/login');
 			}
 		});
 	}
 
 	render() {
 		return (
-			<div className='hero is-fullheight is-fullpage'>
+			<div className='hero is-fullpage is-clipped'>
 				<div className='hero-body columns is-vcentered is-centered'>
 					<div className='column is-one-quarter'>
 						<form

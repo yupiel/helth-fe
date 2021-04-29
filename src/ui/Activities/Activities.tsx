@@ -4,8 +4,6 @@ import ActivitySub from './ActivitySub';
 import ActivityAPIService from '../../ports/ActivityAPIService';
 import { Component } from 'react';
 import { eachDayOfWeekForDate } from '../../common/DateUtils';
-import { isAuthTokenValid } from '../../common/AuthUtils';
-import { Redirect } from 'react-router';
 import NewActivityDialogue from './NewActivityDialogue';
 
 interface ActivitiesComponentStates {
@@ -24,7 +22,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 	}
 
 	componentDidMount() {
-		if (isAuthTokenValid()) this.updateActivitiesInState();
+		this.updateActivitiesInState();
 	}
 
 	private updateActivitiesInState() {
@@ -76,9 +74,6 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 	}
 
 	render() {
-		if (!isAuthTokenValid()) {
-			return <Redirect to='/login' />;
-		}
 		return (
 			<div className='is-fullpage'>
 				<div className='columns is-centered'>

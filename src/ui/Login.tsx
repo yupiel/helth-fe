@@ -5,6 +5,7 @@ import { withHistoryHook } from '../common/HocUtils';
 
 interface LoginProps {
 	history: RouteComponentProps['history'];
+	//redirect: (path: string) => void;
 }
 
 class Login extends Component<LoginProps> {
@@ -30,6 +31,7 @@ class Login extends Component<LoginProps> {
 					if (responseMessage === 'Login Successful') {
 						//redirect on successful login
 						this.props.history.push('/');
+						//this.props.redirectTo('/');
 					}
 				}
 			}
@@ -38,7 +40,7 @@ class Login extends Component<LoginProps> {
 
 	render() {
 		return (
-			<div className='hero is-fullheight is-fullpage'>
+			<div className='hero is-fullpage is-clipped'>
 				<div className='hero-body columns is-vcentered is-centered'>
 					<div className='column is-one-quarter'>
 						<form

@@ -5,8 +5,6 @@ import { Challenge } from '../../domain/Challenge';
 import ChallengeSub from './ChallengesSub';
 import NewChallengeDialogue from './NewChallengeDialogue';
 import ChallengeAPIService from '../../ports/ChallengeAPIService';
-import { isAuthTokenValid } from '../../common/AuthUtils';
-import { Redirect } from 'react-router-dom';
 
 interface ChallengesComponentStates {
 	currentDate: Date;
@@ -26,7 +24,7 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 	}
 
 	componentDidMount() {
-		if (isAuthTokenValid()) this.updateChallengesInState();
+		this.updateChallengesInState();
 	}
 
 	private updateChallengesInState() {
@@ -82,9 +80,6 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 	}
 
 	render() {
-		if (!isAuthTokenValid()) {
-			return <Redirect to='/login' />;
-		}
 		return (
 			<div className='is-fullpage'>
 				<div className='columns is-centered'>
