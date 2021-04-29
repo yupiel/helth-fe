@@ -13,7 +13,7 @@ class ChallengeAPIService {
 	): Promise<Challenge[]> {
 		try {
 			const response = await HttpClient.get(
-				`/challenges?startDate${dateToYMD(
+				`/challenges?startDate=${dateToYMD(
 					startDate
 				)}&endDate=${dateToYMD(endDate)}`
 			);
