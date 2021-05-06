@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/helth-fe/static/css/main.49d28152.chunk.css",
+    "main.js": "/helth-fe/static/js/main.91bf84db.chunk.js",
+    "main.js.map": "/helth-fe/static/js/main.91bf84db.chunk.js.map",
+    "runtime-main.js": "/helth-fe/static/js/runtime-main.3157b6f4.js",
+    "runtime-main.js.map": "/helth-fe/static/js/runtime-main.3157b6f4.js.map",
+    "static/css/2.a1596f27.chunk.css": "/helth-fe/static/css/2.a1596f27.chunk.css",
+    "static/js/2.629306d5.chunk.js": "/helth-fe/static/js/2.629306d5.chunk.js",
+    "static/js/2.629306d5.chunk.js.map": "/helth-fe/static/js/2.629306d5.chunk.js.map",
+    "static/js/3.5b8e7af2.chunk.js": "/helth-fe/static/js/3.5b8e7af2.chunk.js",
+    "static/js/3.5b8e7af2.chunk.js.map": "/helth-fe/static/js/3.5b8e7af2.chunk.js.map",
+    "index.html": "/helth-fe/index.html",
+    "static/css/2.a1596f27.chunk.css.map": "/helth-fe/static/css/2.a1596f27.chunk.css.map",
+    "static/css/main.49d28152.chunk.css.map": "/helth-fe/static/css/main.49d28152.chunk.css.map",
+    "static/js/2.629306d5.chunk.js.LICENSE.txt": "/helth-fe/static/js/2.629306d5.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3157b6f4.js",
+    "static/css/2.a1596f27.chunk.css",
+    "static/js/2.629306d5.chunk.js",
+    "static/css/main.49d28152.chunk.css",
+    "static/js/main.91bf84db.chunk.js"
+  ]
+}
