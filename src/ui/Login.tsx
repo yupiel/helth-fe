@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import UserAPIService from '../ports/UserAPIService';
 import { withHistoryHook } from '../common/HocUtils';
+import { createToast } from '../common/Toaster';
 
 interface LoginProps {
 	history: RouteComponentProps['history'];
-	//redirect: (path: string) => void;
 }
 
 class Login extends Component<LoginProps> {
@@ -28,10 +28,11 @@ class Login extends Component<LoginProps> {
 				if (responseMessage !== undefined) {
 					console.log(responseMessage); //TODO toast?
 
-					if (responseMessage === 'Login Successful') {
+					if (responseMessage.token !== '') {
+						createToast('Successfully Logged in', 'is-success');
+
 						//redirect on successful login
 						this.props.history.push('/');
-						//this.props.redirectTo('/');
 					}
 				}
 			}

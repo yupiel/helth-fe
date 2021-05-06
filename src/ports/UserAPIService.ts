@@ -23,7 +23,7 @@ class UserAPIService {
 	public async loginUser(
 		username: String,
 		password: String
-	): Promise<String> {
+	): Promise<{token: string}> {
 		try {
 			const response = await HttpClient.post('/tokens', false, {
 				username: username,
@@ -33,7 +33,7 @@ class UserAPIService {
 			const token = response.data['token'];
 			localStorage.setItem('accessToken', token);
 
-			return Promise.resolve('Login Successful');
+			return Promise.resolve(response.data);
 		} catch (err) {
 			return Promise.reject(err);
 		}

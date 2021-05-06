@@ -54,8 +54,6 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 				);
 
 				if (filtered.length > 0) {
-					console.log(`filtered`);
-					console.log(filtered);
 					return (
 						<div
 							className='row'

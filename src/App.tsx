@@ -6,36 +6,21 @@ import Login from './ui/Login';
 import Activities from './ui/Activities/Activities';
 import Challenges from './ui/Challenges/Challenges';
 import Logout from './ui/Logout';
-import { BrowserRouter as Router, Switch, useHistory } from 'react-router-dom';
+import { HashRouter, Switch } from 'react-router-dom';
 
 function App() {
-	//const history = useHistory();
-
-	//let redirectTo = (path: string = '/login') => {
-	//	history.push(path);
-	//};
-
 	return (
-		<Router>
+		<HashRouter basename={process.env.PUBLIC_URL}>
+			<div id='toast-container' />
 			<Switch>
-				<PublicRoute
-					exact
-					path='/register'
-					//redirectTo={redirectTo}
-					component={Register}
-				/>
-				<PublicRoute
-					exact
-					path='/login'
-					//redirectTo={redirectTo}
-					component={Login}
-				/>
+				<PublicRoute exact path='/register' component={Register} />
+				<PublicRoute exact path='/login' component={Login} />
 
 				<PrivateRoute exact path='/' component={Activities} />
 				<PrivateRoute exact path='/challenges' component={Challenges} />
 				<PrivateRoute exact path='/logout' component={Logout} />
 			</Switch>
-		</Router>
+		</HashRouter>
 	);
 }
 

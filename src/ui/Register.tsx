@@ -2,10 +2,10 @@ import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import UserAPIService from '../ports/UserAPIService';
 import { withHistoryHook } from '../common/HocUtils';
+import { createToast } from '../common/Toaster';
 
 interface RegisterProps {
 	history: RouteComponentProps['history'];
-	//redirectTo: (path: string) => void;
 }
 
 class Register extends React.Component<RegisterProps> {
@@ -28,11 +28,10 @@ class Register extends React.Component<RegisterProps> {
 			this.state.password
 		).then((user) => {
 			if (user !== undefined && user.id !== undefined) {
-				console.log('Account successfully created'); //TODO toast? delay?
+				createToast('Successfully Registered', 'is-success');
 
 				//redirect to login page on successful register
 				this.props.history.push('/login');
-				//this.props.redirectTo('/login');
 			}
 		});
 	}

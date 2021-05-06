@@ -5,10 +5,12 @@ import ActivityAPIService from '../../ports/ActivityAPIService';
 import { Component } from 'react';
 import { eachDayOfWeekForDate } from '../../common/DateUtils';
 import NewActivityDialogue from './NewActivityDialogue';
+import Calendar from 'react-calendar';
 
 interface ActivitiesComponentStates {
 	currentDate: Date;
 	activities: Activity[];
+	calendarVisible: boolean;
 }
 
 class Activities extends Component<{}, ActivitiesComponentStates> {
@@ -18,6 +20,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		this.state = {
 			currentDate: new Date(),
 			activities: [],
+			calendarVisible: false
 		};
 	}
 
@@ -73,6 +76,21 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		);
 	}
 
+	private changeCurrentDate(newDateSelection: Date | Date[]) {
+		if (Array.isArray(newDateSelection)) {
+			return;
+		} else {
+			this.setState({ currentDate: newDateSelection });
+			this.setState({calendarVisible: false})
+		}
+	}
+
+	private showCalendar(event: React.SyntheticEvent) {
+		event.preventDefault();
+
+		this.setState({calendarVisible: !this.state.calendarVisible})
+	}
+
 	render() {
 		return (
 			<div className='is-fullpage'>
@@ -83,11 +101,21 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 						<p className='title is-1'>
 							{`${getYear(this.state.currentDate)}`}
 						</p>
-						<p className='subtitle'>
-							{`CW ${getWeek(this.state.currentDate, {
-								weekStartsOn: 1,
-							})}`}
-						</p>
+						<div className='is-flex is-flex-direction-row'>
+							<button className='button is-justify-content-start' onClick={this.showCalendar.bind(this)}>
+								{`CW ${getWeek(
+								this.state.currentDate,
+								{ weekStartsOn: 1 }
+							)}`}
+							</button>
+							<Calendar
+								className={`ml-6 calendar box is-justify-content-end ${this.state.calendarVisible ? '' : 'is-hidden'}`}
+								minDetail='year'
+								showWeekNumbers={true}
+								onChange={this.changeCurrentDate.bind(this)}
+								value={this.state.currentDate}
+							/>
+						</div>
 						<div className='rows'>
 							{this.createDayClustersForActivitiesInWeekForStateCurrentDate()}
 						</div>

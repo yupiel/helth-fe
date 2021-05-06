@@ -1,11 +1,7 @@
-import { Redirect, Route, RouteProps } from 'react-router';
+import { Redirect, Route } from 'react-router';
 import { isAuthTokenValid } from './common/AuthUtils';
 
-interface PublicRouteProps extends RouteProps {
-	//redirectTo: (path: string) => void;
-}
-
-class PublicRoute extends Route<PublicRouteProps> {
+class PublicRoute extends Route{
 	private homePath = '/';
 
 	render() {
@@ -19,12 +15,6 @@ class PublicRoute extends Route<PublicRouteProps> {
 			);
 		} else {
 			return <Route {...this.props} />;
-			//<Route
-			//	path={this.props.location?.pathname}
-			//	component={() => (
-			//		<this.Component redirectTo={this.props.redirectTo} />
-			//	)}
-			///>
 		}
 	}
 }

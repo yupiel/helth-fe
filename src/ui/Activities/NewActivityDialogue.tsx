@@ -21,6 +21,7 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 			returnOptions.push(
 				<option
 					key={`type_${ActivityTypes[key].typeText}`}
+					data-testid='activity_add_dialogue_type_dropdown_option'
 					value={ActivityTypes[key].typeText}>
 					{ActivityTypes[key].typeDescription}
 				</option>
@@ -42,7 +43,7 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 		event: React.FormEvent<HTMLFormElement>
 	) {
 		event.preventDefault();
-
+		console.log(this.state.currentNewActivityFormSelection)
 		if (
 			!isBasicStateValueValid(this.state.currentNewActivityFormSelection)
 		) {
@@ -75,15 +76,17 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 
 	render() {
 		return (
-			<div className='level is-floating-bottom-right mr-6'>
+			<div className='is-flex is-position-fixed-bottom-right is-justify-content-flex-end is-flex-direction-row'>
 				<div
-					className={`level-right mb-3 ${
+					data-testid='activity_add_flexparent'
+					className={`is-align-self-flex-end mb-5 ${
 						this.state.newActivityDialogueVisible
 							? ''
 							: 'is-invisible'
 					}`}>
 					<form
 						className='box'
+						data-testid='activity_add_dialogue'
 						onSubmit={this.handleCreateNewActivityButton.bind(
 							this
 						)}>
@@ -91,11 +94,15 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 						<div className='control select'>
 							<select
 								name='activity_type'
+								data-testid='activity_add_dialogue_type_dropdown'
 								onChange={this.handleSelectDropDownChange.bind(
 									this
 								)}
 								defaultValue='DEFAULT'>
-								<option key='type_DEFAULT' value='DEFAULT'>
+								<option
+									data-testid='activity_add_dialogue_type_dropdown_option'
+									key='type_DEFAULT'
+									value='DEFAULT'>
 									Select an activity type...
 								</option>
 								{this.createDropdownOptionsForActivityTypes()}
@@ -103,20 +110,19 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 						</div>
 						<input
 							className='button is-link'
+							data-testid='activity_add_dialogue_submit_button'
 							type='submit'
 							value='Submit'></input>
 					</form>
 				</div>
-
-				<div className='level-right ml-5'>
-					<button
-						onClick={this.handleShowNewActivityDialogueButton.bind(
-							this
-						)}
-						className='button is-dark is-medium'>
-						{this.state.newActivityDialogueButtonText}
-					</button>
-				</div>
+				<button
+					onClick={this.handleShowNewActivityDialogueButton.bind(
+						this
+					)}
+					data-testid='activity_add_button'
+					className='button is-dark is-medium is-align-self-flex-end mb-5 mr-5 ml-5'>
+					{this.state.newActivityDialogueButtonText}
+				</button>
 			</div>
 		);
 	}

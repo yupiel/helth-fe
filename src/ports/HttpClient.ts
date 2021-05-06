@@ -16,9 +16,9 @@ class HttpClient {
 		try {
 			return await this.apiClient.get(
 				path,
-				authorized ? { headers: getAuthHeaderFromStorage() } : {}
+				authorized ? { headers: this.getAuthHeaderFromStorage() } : {}
 			);
-		} catch (err) {return handleError(err)}
+		} catch (err) {return this.handleError(err)}
 	}
 
 	public async post(
@@ -30,40 +30,39 @@ class HttpClient {
 			return await this.apiClient.post(
 				path,
 				body,
-				authorized ? { headers: getAuthHeaderFromStorage() } : {}
+				authorized ? { headers: this.getAuthHeaderFromStorage() } : {}
 			);
-		} catch (err) {return handleError(err)}
+		} catch (err) {return this.handleError(err)}
 	}
 
 	public async delete(path: string): Promise<AxiosResponse> {
 		try {
 			return await this.apiClient.delete(path, {
-				headers: getAuthHeaderFromStorage(),
+				headers: this.getAuthHeaderFromStorage(),
 			});
-		} catch (err) {return handleError(err)}
-	}
-}
-
-function handleError(error: any): Promise<any> {
-	if (axios.isAxiosError(error)) {
-		let axiosError: AxiosError<any> = error as AxiosError<any>;
-		console.error(axiosError.response);
-	} else {
-		console.error(error);
+		} catch (err) {return this.handleError(err)}
 	}
 
-	return Promise.reject(error);
-}
-
-function getAuthHeaderFromStorage(): { Authorization: string } {
-	const authHeaderPrefix = 'Bearer ';
-	const accessToken = localStorage.getItem('accessToken');
-
-	if (accessToken === undefined || accessToken == null) {
-		//TODO add no auth header toast
-		throw Error('No Auth header found in localStorage');
-	} else {
-		return { Authorization: authHeaderPrefix + accessToken };
+	private handleError(error: any): Promise<any> {
+		if (axios.isAxiosError(error)) {
+			let axiosError: AxiosError<any> = error as AxiosError<any>;
+			console.error(axiosError.response);
+		} else {
+			console.error(error);
+		}
+	
+		return Promise.reject(error);
+	}
+	
+	private getAuthHeaderFromStorage(): { Authorization: string } {
+		const authHeaderPrefix = 'Bearer ';
+		const accessToken = localStorage.getItem('accessToken');
+	
+		if (accessToken === undefined || accessToken == null) {
+			throw new Error('No Auth header found in localStorage');
+		} else {
+			return { Authorization: authHeaderPrefix + accessToken };
+		}
 	}
 }
 

@@ -134,9 +134,9 @@ class NewChallengeDialogue extends Component<
 
 	render() {
 		return (
-			<div className='level is-floating-bottom-right mr-6'>
+			<div className='is-flex is-position-fixed-bottom-right is-justify-content-flex-end is-flex-direction-row'>
 				<div
-					className={`level-right mb-3 ${
+					className={`is-align-self-flex-end mb-5 ${
 						this.state.newChallengeDialogueVisible
 							? ''
 							: 'is-invisible'
@@ -216,7 +216,7 @@ class NewChallengeDialogue extends Component<
 					</form>
 				</div>
 
-				<div className='level-right ml-5'>
+				<div className='is-align-self-flex-end mb-5 ml-5 mr-5'>
 					<button
 						onClick={this.handleShowNewChallengeDialogueButton.bind(
 							this
