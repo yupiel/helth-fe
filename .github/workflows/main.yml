@@ -26,6 +26,11 @@ jobs:
             - name: Run Jest tests
               run: npm run test
 
+            # Build App
+            - name: Build React App
+              run: npm run build
+
+            # Push to Separate Branch for Pages
             - name: Push git subdirectory as branch
               uses: s0/git-publish-subdir-action@v2.4.0
               env:
