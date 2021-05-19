@@ -12,11 +12,11 @@ class ActivityAPIService {
 		endDate: Date
 	): Promise<Activity[]> {
 		try {
-			const response = await HttpClient.get(
-				`/activities?startDate=${dateToYMD(
+			const response = await HttpClient.get({
+				path: `/activities?startDate=${dateToYMD(
 					startDate
-				)}&endDate=${dateToYMD(endDate)}`
-			);
+				)}&endDate=${dateToYMD(endDate)}`,
+			});
 
 			const activities = response.data.map(
 				(activity: ActivityResponse) => {
@@ -35,9 +35,13 @@ class ActivityAPIService {
 		date: Date
 	): Promise<Activity> {
 		try {
-			const response = await HttpClient.post('/activities', true, {
-				textType: activityType,
-				creationDate: dateToYMD(date),
+			const response = await HttpClient.post({
+				path: '/activities',
+				authorized: true,
+				body: {
+					textType: activityType,
+					creationDate: dateToYMD(date),
+				},
 			});
 
 			const activity = activityFromActivityResponseObject(response.data);

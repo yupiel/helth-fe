@@ -26,7 +26,7 @@ class Login extends Component<LoginProps> {
 		UserAPIService.loginUser(this.state.username, this.state.password).then(
 			(responseMessage) => {
 				if (responseMessage !== undefined) {
-					console.log(responseMessage); //TODO toast?
+					console.log(responseMessage);
 
 					if (responseMessage.token !== '') {
 						createToast('Successfully Logged in', 'is-success');

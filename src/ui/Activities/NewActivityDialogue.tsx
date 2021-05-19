@@ -43,7 +43,7 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 		event: React.FormEvent<HTMLFormElement>
 	) {
 		event.preventDefault();
-		console.log(this.state.currentNewActivityFormSelection)
+		console.log(this.state.currentNewActivityFormSelection);
 		if (
 			!isBasicStateValueValid(this.state.currentNewActivityFormSelection)
 		) {
@@ -54,6 +54,7 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 			this.state.currentNewActivityFormSelection,
 			this.props.currentDate
 		);
+		console.log('REACHED', this.props.updateListFunction);
 
 		this.props.updateListFunction();
 	}

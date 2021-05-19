@@ -2,7 +2,7 @@ import { getWeek, isSameWeek } from 'date-fns';
 import { Component } from 'react';
 import { eachCalendarWeekRangeInMonthForDate } from '../../common/DateUtils';
 import { Challenge } from '../../domain/Challenge';
-import ChallengeSub from './ChallengesSub';
+import ChallengeSub from './ChallengeSub';
 import NewChallengeDialogue from './NewChallengeDialogue';
 import ChallengeAPIService from '../../ports/ChallengeAPIService';
 
@@ -12,8 +12,11 @@ interface ChallengesComponentStates {
 	challenges: Challenge[];
 }
 
-class Challenges extends Component<{}, ChallengesComponentStates> {
-	constructor(props: {}) {
+class Challenges extends Component<
+	{ currentDate?: Date | undefined },
+	ChallengesComponentStates
+> {
+	constructor(props: { currentDate?: Date | undefined }) {
 		super(props);
 
 		this.state = {
@@ -24,6 +27,9 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 	}
 
 	componentDidMount() {
+		if (this.props.currentDate)
+			this.setState({ currentDate: this.props.currentDate });
+
 		this.updateChallengesInState();
 	}
 
@@ -97,7 +103,9 @@ class Challenges extends Component<{}, ChallengesComponentStates> {
 						</div>
 					</div>
 				</div>
-				<NewChallengeDialogue updateListFunction={this.updateChallengesInState.bind(this)} />
+				<NewChallengeDialogue
+					updateListFunction={this.updateChallengesInState.bind(this)}
+				/>
 			</div>
 		);
 	}

@@ -1,4 +1,5 @@
 import {
+	act,
 	cleanup,
 	fireEvent,
 	render,
@@ -65,7 +66,7 @@ describe('NewActivityDialogue', () => {
 		}
 	});
 
-	test.skip('component should call ActivityAPIService when add-button is pressed with valid option selected', async () => {
+	test('component should call ActivityAPIService when add-button is pressed with valid option selected', async () => {
 		render(
 			<NewActivityDialogue
 				currentDate={testCurrentDate}
@@ -77,9 +78,6 @@ describe('NewActivityDialogue', () => {
 			testActivity
 		);
 
-		const newActivityDialogue = await waitFor(() =>
-			screen.getByTestId('activity_add_dialogue')
-		);
 		const dropdownObject = await waitFor(() =>
 			screen.getByTestId('activity_add_dialogue_type_dropdown')
 		);
@@ -87,13 +85,13 @@ describe('NewActivityDialogue', () => {
 			screen.getByTestId('activity_add_dialogue_submit_button')
 		);
 
-		fireEvent.change(dropdownObject, { target: { value: 3 } });
-		fireEvent.click(dialogueSubmitButton);
-        fireEvent.submit(newActivityDialogue);
-        
-		//expect(mockedCall).toHaveBeenCalled();
-        expect(mockedParentUpdateFunction()).toHaveBeenCalled();
-        //TODO: have not been called
+		fireEvent.change(dropdownObject, { target: { value: 'DRINK_WATER' } });
+		await act(async () => {
+			fireEvent.click(dialogueSubmitButton);
+		});
+
+		expect(mockedCall).toHaveBeenCalled();
+		expect(mockedParentUpdateFunction).toHaveBeenCalled();
 	});
 
 	test.skip('component should not call ActivityAPIService when add-button is pressed with invalid option selected', async () => {
@@ -130,7 +128,7 @@ const testActivity: Activity = {
 	userID: '8138ab00-1b29-41b8-a27f-b1354d47a94a',
 };
 
-const mockedParentUpdateFunction = () => jest.fn();
+const mockedParentUpdateFunction = jest.fn();
 
 function activityAPIService_saveNewActivityForUserResolves(
 	returnData: Activity

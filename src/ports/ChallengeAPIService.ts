@@ -12,11 +12,11 @@ class ChallengeAPIService {
 		endDate: Date
 	): Promise<Challenge[]> {
 		try {
-			const response = await HttpClient.get(
-				`/challenges?startDate=${dateToYMD(
+			const response = await HttpClient.get({
+				path: `/challenges?startDate=${dateToYMD(
 					startDate
-				)}&endDate=${dateToYMD(endDate)}`
-			);
+				)}&endDate=${dateToYMD(endDate)}`,
+			});
 
 			const receivedChallenges = response.data.map(
 				(challenge: ChallengeResponse) =>
@@ -35,10 +35,14 @@ class ChallengeAPIService {
 		durationInWeeks: number
 	): Promise<Challenge> {
 		try {
-			const response = await HttpClient.post('/challenges', true, {
-				activityTypeText: activityType,
-				timesAWeekGoal: timesAWeekGoal,
-				weeksDuration: durationInWeeks,
+			const response = await HttpClient.post({
+				path: '/challenges',
+				authorized: true,
+				body: {
+					activityTypeText: activityType,
+					timesAWeekGoal: timesAWeekGoal,
+					weeksDuration: durationInWeeks,
+				},
 			});
 
 			const challenge = challengeFromChallengeResponseObject(

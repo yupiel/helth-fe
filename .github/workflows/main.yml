@@ -8,7 +8,7 @@ on:
 
 jobs:
     build:
-        name: Build, Test, Docker Push, and Heroku deployment
+        name: Build, Test, and Deploy
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2

@@ -79,7 +79,8 @@ class NewChallengeDialogue extends Component<
 			returnOptions.push(
 				<option
 					key={`new_challenge_activity_type_${ActivityTypes[key].typeText}`}
-					value={ActivityTypes[key].typeText}>
+					value={ActivityTypes[key].typeText}
+					data-testid='challenge_add_dialogue_type_dropdown_option'>
 					{ActivityTypes[key].typeDescription}
 				</option>
 			);
@@ -145,7 +146,8 @@ class NewChallengeDialogue extends Component<
 						className='box'
 						onSubmit={this.handleSubmitNewChallengeCreationForm.bind(
 							this
-						)}>
+						)}
+						data-testid='challenge_add_dialogue'>
 						<p className='title is-5'>New Challenge</p>
 
 						<div className='field'>
@@ -160,8 +162,12 @@ class NewChallengeDialogue extends Component<
 									defaultValue='DEFAULT'
 									onChange={this.handleNewChallengeActivityTypeChange.bind(
 										this
-									)}>
-									<option key='type_DEFAULT' value='DEFAULT'>
+									)}
+									data-testid='challenge_add_dialogue_type_dropdown'>
+									<option
+										key='type_DEFAULT'
+										value='DEFAULT'
+										data-testid='challenge_add_dialogue_type_dropdown_option'>
 										Select an Activity Type...
 									</option>
 									{this.createDropwDownOptionsForNewChallengeActivityTypes()}
@@ -184,6 +190,7 @@ class NewChallengeDialogue extends Component<
 									name='new_challenge_weekly_goal'
 									placeholder='max. 21'
 									required={true}
+									data-testid='challenge_add_dialogue_weely_goal'
 									onChange={this.handleNewChallengeWeeklyGoalChange.bind(
 										this
 									)}></input>
@@ -221,7 +228,8 @@ class NewChallengeDialogue extends Component<
 						onClick={this.handleShowNewChallengeDialogueButton.bind(
 							this
 						)}
-						className='button is-dark is-medium'>
+						className='button is-dark is-medium'
+						data-testid='challenge_add_button'>
 						{this.state.newChallengeDialogueButtonText}
 					</button>
 				</div>

@@ -1,14 +1,14 @@
 import UserAPIService from './UserAPIService';
-import mockLocalStorage from '../__mocks__/mockLocalStorage';
+import MockLocalStorage from '../__mocks__/MockLocalStorage';
 import { User } from '../domain/User';
-import mockHttpClientFunction from '../__mocks__/MockHttpClient';
+import mockHttpClientFunction from '../__mocks__/MockHttpClientFunction';
 
 describe('UserAPIService', () => {
 	beforeAll(() => {
 		//@ts-ignore
-		global.localStorage = mockLocalStorage;
+		global.localStorage = MockLocalStorage;
 	});
-	
+
 	test('registerUser resolves user data and maps to User interface Object in response to post request with username and password', async () => {
 		const mockedCall = mockHttpClientFunction({
 			functionName: 'post',
@@ -34,10 +34,8 @@ describe('UserAPIService', () => {
 			resolved: false,
 		});
 
-		let requestResponse = async () => await UserAPIService.registerUser(
-			'yupiel',
-			'yeetyote'
-		);
+		let requestResponse = async () =>
+			await UserAPIService.registerUser('yupiel', 'yeetyote');
 
 		expect(mockedCall).toHaveBeenCalled();
 		expect(requestResponse).rejects;
@@ -78,10 +76,8 @@ describe('UserAPIService', () => {
 			resolved: false,
 		});
 
-		let requestResponse = async () => await UserAPIService.loginUser(
-			'yupiel',
-			'yeetyote'
-		);
+		let requestResponse = async () =>
+			await UserAPIService.loginUser('yupiel', 'yeetyote');
 
 		expect(mockedCall).toHaveBeenCalled();
 		expect(requestResponse).rejects;

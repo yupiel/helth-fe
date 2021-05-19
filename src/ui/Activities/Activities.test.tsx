@@ -19,7 +19,7 @@ describe('Activities', () => {
 		const daySegments = await waitFor(() =>
 			screen.getAllByTestId('activities_list_day')
 		);
-		expect(daySegments.length).toEqual(3);
+		expect(daySegments).toHaveLength(3);
 	});
 
 	test('component should render no day sections when ActivityAPIService returns no Activity objects', async () => {
@@ -34,7 +34,7 @@ describe('Activities', () => {
 		const daySegments = await waitFor(() =>
 			screen.queryAllByTestId('activities_list_day')
 		);
-		expect(daySegments.length).toEqual(0);
+		expect(daySegments).toHaveLength(0);
 	});
 });
 

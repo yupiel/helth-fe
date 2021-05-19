@@ -20,7 +20,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		this.state = {
 			currentDate: new Date(),
 			activities: [],
-			calendarVisible: false
+			calendarVisible: false,
 		};
 	}
 
@@ -43,7 +43,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 
 	private createDayClustersForActivitiesInWeekForStateCurrentDate() {
 		return eachDayOfWeekForDate(this.state.currentDate).map(
-			(weekDay, index) => {
+			(weekDay, weekIndex) => {
 				//map each day of the current week
 				const filtered = this.state.activities.filter(
 					//filter if one of the weekDays overlaps with a creationDate in the activity
@@ -56,16 +56,16 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 						<div
 							className='row'
 							data-testid='activities_list_day'
-							key={`week_day_${index.toString()}`}>
+							key={`week_day_${weekIndex.toString()}`}>
 							<p className='subtitle is-6 mt-6'>{`${format(
 								filtered[0].creationDate,
 								'MMMM do',
 								{ weekStartsOn: 1 }
 							)}`}</p>
-							{filtered.map((activity, index) => (
+							{filtered.map((activity, filterIndex) => (
 								<ActivitySub
 									{...activity}
-									key={`batch_no_${index.toString()}`}
+									key={`batch_no_${filterIndex.toString()}`}
 								/>
 							))}
 						</div>
@@ -78,17 +78,18 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 
 	private changeCurrentDate(newDateSelection: Date | Date[]) {
 		if (Array.isArray(newDateSelection)) {
-			return;
+			this.setState({ currentDate: newDateSelection[0] });
+			this.setState({ calendarVisible: false });
 		} else {
 			this.setState({ currentDate: newDateSelection });
-			this.setState({calendarVisible: false})
+			this.setState({ calendarVisible: false });
 		}
 	}
 
-	private showCalendar(event: React.SyntheticEvent) {
+	private toggleCalendarVisibility(event: React.SyntheticEvent) {
 		event.preventDefault();
 
-		this.setState({calendarVisible: !this.state.calendarVisible})
+		this.setState({ calendarVisible: !this.state.calendarVisible });
 	}
 
 	render() {
@@ -102,14 +103,19 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 							{`${getYear(this.state.currentDate)}`}
 						</p>
 						<div className='is-flex is-flex-direction-row'>
-							<button className='button is-justify-content-start' onClick={this.showCalendar.bind(this)}>
-								{`CW ${getWeek(
-								this.state.currentDate,
-								{ weekStartsOn: 1 }
-							)}`}
+							<button
+								className='button is-justify-content-start'
+								onClick={this.toggleCalendarVisibility.bind(this)}>
+								{`CW ${getWeek(this.state.currentDate, {
+									weekStartsOn: 1,
+								})}`}
 							</button>
 							<Calendar
-								className={`ml-6 calendar box is-justify-content-end ${this.state.calendarVisible ? '' : 'is-hidden'}`}
+								className={`ml-6 calendar box is-justify-content-end ${
+									this.state.calendarVisible
+										? ''
+										: 'is-hidden'
+								}`}
 								minDetail='year'
 								showWeekNumbers={true}
 								onChange={this.changeCurrentDate.bind(this)}

@@ -35,12 +35,11 @@ class ActivityIcon extends Component<ActivityType> {
 
 	render() {
 		return (
-            <IconContext.Provider value={{ className: 'icon is-medium' }}>
+            <IconContext.Provider value={{ className: 'icon is-medium mt-2' }}>
                 <div data-testid='activity_entry_icon'>
 				    {this.setIconForActivityType(this.props)}
 			    </div>
             </IconContext.Provider>
-			
 		);
 	}
 }

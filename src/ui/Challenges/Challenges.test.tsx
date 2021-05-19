@@ -9,16 +9,33 @@ import Challenges from './Challenges';
 describe('Challenges', () => {
 	afterEach(() => cleanup());
 
-	test('component should render separate sections for each calendar week in the month', async () => {
-		const mockCall = givenChallengeAPIService_getBetweenDatesReturns();
-
-		render(<Challenges />);
-
-		expect(mockCall).toHaveBeenCalled();
-		const weekSegments = await waitFor(() =>
-			screen.getAllByTestId('challenges_list_week')
+	test('component should render separate sections for each calendar week in the month a challenge exists in', async () => {
+		const mockedCall = challengeAPIService_getAllChallengesForUserBetweenDatesReturns(
+			challengesSpanningThreeWeeks
 		);
+
+		render(<Challenges currentDate={new Date('2021-05-01')} />);
+
+		expect(mockedCall).toHaveBeenCalled();
+		const weekSegments = await screen.findAllByTestId(
+			'challenges_list_week'
+		);
+
 		expect(weekSegments.length).toEqual(3);
+	});
+
+	test('componen should render no week sections when no challenges were received', async () => {
+		const mockedCall = challengeAPIService_getAllChallengesForUserBetweenDatesReturns(
+			[]
+		);
+
+		render(<Challenges currentDate={new Date('2021-05-01')} />);
+
+		expect(mockedCall).toHaveBeenCalled();
+		const weekSegments = await waitFor(() =>
+			screen.queryAllByTestId('challenge_list_week')
+		);
+		expect(weekSegments.length).toEqual(0);
 	});
 });
 
@@ -28,8 +45,8 @@ const challengesSpanningThreeWeeks: Challenge[] = [
 		activityType: ActivityTypes['RUNNING'],
 		timesAWeekGoal: 4,
 		timesAWeekCurrent: 2,
-		startDate: addWeeks(new Date(), 1),
-		expirationDate: addWeeks(new Date(), 2),
+		startDate: new Date('2021-05-03'),
+		expirationDate: addWeeks(new Date('2021-05-03'), 1),
 		challengeStatus: ChallengeStatuses['IN_PROGRESS'],
 		userID: 'very cool user id',
 	},
@@ -38,8 +55,8 @@ const challengesSpanningThreeWeeks: Challenge[] = [
 		activityType: ActivityTypes['WALKING'],
 		timesAWeekGoal: 4,
 		timesAWeekCurrent: 2,
-		startDate: addWeeks(new Date(), 1),
-		expirationDate: addWeeks(new Date(), 2),
+		startDate: new Date('2021-05-03'),
+		expirationDate: addWeeks(new Date('2021-05-03'), 1),
 		challengeStatus: ChallengeStatuses['IN_PROGRESS'],
 		userID: 'very cool user id',
 	},
@@ -48,8 +65,8 @@ const challengesSpanningThreeWeeks: Challenge[] = [
 		activityType: ActivityTypes['DRINK_WATER'],
 		timesAWeekGoal: 4,
 		timesAWeekCurrent: 2,
-		startDate: addWeeks(new Date(), 1),
-		expirationDate: addWeeks(new Date(), 2),
+		startDate: new Date('2021-05-03'),
+		expirationDate: addWeeks(new Date('2021-05-03'), 1),
 		challengeStatus: ChallengeStatuses['IN_PROGRESS'],
 		userID: 'very cool user id',
 	},
@@ -58,28 +75,18 @@ const challengesSpanningThreeWeeks: Challenge[] = [
 		activityType: ActivityTypes['RUNNING'],
 		timesAWeekGoal: 4,
 		timesAWeekCurrent: 2,
-		startDate: addWeeks(new Date(), 2),
-		expirationDate: addWeeks(new Date(), 3),
+		startDate: new Date('2021-05-10'),
+		expirationDate: addWeeks(new Date('2021-05-10'), 1),
 		challengeStatus: ChallengeStatuses['IN_PROGRESS'],
 		userID: 'very cool user id',
 	},
 	{
 		id: 'very cool id',
-		activityType: ActivityTypes['WALKING'],
+		activityType: ActivityTypes['CALISTHENICS'],
 		timesAWeekGoal: 4,
 		timesAWeekCurrent: 2,
-		startDate:addWeeks(new Date(), 2),
-		expirationDate: addWeeks(new Date(), 3),
-		challengeStatus: ChallengeStatuses['IN_PROGRESS'],
-		userID: 'very cool user id',
-	},
-	{
-		id: 'very cool id',
-		activityType: ActivityTypes['RUNNING'],
-		timesAWeekGoal: 4,
-		timesAWeekCurrent: 2,
-		startDate: addWeeks(new Date(), 3),
-		expirationDate: addWeeks(new Date(), 4),
+		startDate: new Date('2021-05-10'),
+		expirationDate: addWeeks(new Date('2021-05-10'), 1),
 		challengeStatus: ChallengeStatuses['IN_PROGRESS'],
 		userID: 'very cool user id',
 	},
@@ -88,17 +95,27 @@ const challengesSpanningThreeWeeks: Challenge[] = [
 		activityType: ActivityTypes['RUNNING'],
 		timesAWeekGoal: 4,
 		timesAWeekCurrent: 2,
-		startDate: addWeeks(new Date(), 3),
-		expirationDate: addWeeks(new Date(), 4),
+		startDate: new Date('2021-05-17'),
+		expirationDate: addWeeks(new Date('2021-05-17'), 1),
+		challengeStatus: ChallengeStatuses['IN_PROGRESS'],
+		userID: 'very cool user id',
+	},
+	{
+		id: 'very cool id',
+		activityType: ActivityTypes['SWIMMING'],
+		timesAWeekGoal: 4,
+		timesAWeekCurrent: 2,
+		startDate: new Date('2021-05-17'),
+		expirationDate: addWeeks(new Date('2021-05-17'), 1),
 		challengeStatus: ChallengeStatuses['IN_PROGRESS'],
 		userID: 'very cool user id',
 	},
 ];
 
-function givenChallengeAPIService_getBetweenDatesReturns() {
+function challengeAPIService_getAllChallengesForUserBetweenDatesReturns(
+	returnData: Challenge[]
+) {
 	return jest
 		.spyOn(ChallengeAPIService, 'getAllChallengesForUserBetweenDates')
-		.mockImplementation(() =>
-			Promise.resolve(challengesSpanningThreeWeeks)
-		);
+		.mockImplementation(() => Promise.resolve(returnData));
 }

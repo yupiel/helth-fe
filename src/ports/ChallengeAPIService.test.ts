@@ -1,5 +1,5 @@
 import { ChallengeResponse } from '../domain/Challenge';
-import mockHttpClientFunction from '../__mocks__/MockHttpClient';
+import mockHttpClientFunction from '../__mocks__/MockHttpClientFunction';
 import { addWeeks } from 'date-fns';
 import ChallengeAPIService from './ChallengeAPIService';
 

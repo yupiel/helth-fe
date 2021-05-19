@@ -1,6 +1,6 @@
 import { ActivityResponse } from '../domain/Activity';
 import ActivityAPIService from './ActivityAPIService';
-import mockHttpClientFunction from '../__mocks__/MockHttpClient';
+import mockHttpClientFunction from '../__mocks__/MockHttpClientFunction';
 import { addWeeks } from 'date-fns';
 
 describe('ActivityAPIService', () => {

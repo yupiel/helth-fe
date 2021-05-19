@@ -1,22 +1,22 @@
 import { differenceInCalendarWeeks, getWeek } from 'date-fns';
 import { Component } from 'react';
 import { Challenge } from '../../domain/Challenge';
-import ActivityIcon from '../ActivityIcon'
+import ActivityIcon from '../ActivityIcon';
 
 class ChallengeSub extends Component<Challenge> {
-	private getColorCSSClassForChallengeStatus(
-		challengeStatus: string
-	): string {
-		switch (challengeStatus) {
-			case 'IN_PROGRESS':
-				return '';
-			case 'SUCCEEDED':
-				return 'has-background-success-light';
-			case 'FAILED':
-				return 'has-background-danger-light';
+	private getColorCSSClassForChallengeStatus(): string {
+		try {
+			switch (this.props.challengeStatus.statusText) {
+				case 'SUCCEEDED':
+					return 'has-background-success-light';
+				case 'FAILED':
+					return 'has-background-danger-light';
 
-			default:
-				return 'has-background-danger-dark';
+				default:
+					return '';
+			}
+		} catch (error) {
+			return 'has-background-danger-dark';
 		}
 	}
 
@@ -24,13 +24,13 @@ class ChallengeSub extends Component<Challenge> {
 		return (
 			<div className='field row'>
 				<div
-					className={`box is-grouped level ${this.getColorCSSClassForChallengeStatus(
-						this.props.challengeStatus.statusText
-					)}`}
-					data-testid='challenge'>
+					className={`box is-grouped level ${this.getColorCSSClassForChallengeStatus()}`}
+					data-testid='challenge_entry'>
 					<div className='level-left'>
 						<ActivityIcon {...this.props.activityType} />
-						<p className='title is-5 ml-3'>
+						<p
+							className='title is-5 ml-3'
+							data-testid='challenge_entry_activity_type'>
 							{this.props.activityType.typeDescription}
 						</p>
 					</div>

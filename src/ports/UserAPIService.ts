@@ -1,15 +1,19 @@
 import HttpClient from './HttpClient';
-import {User, UserResponse, userFromUserResponseObject} from '../domain/User';
+import { User, UserResponse, userFromUserResponseObject } from '../domain/User';
 
 class UserAPIService {
 	public async registerUser(
-		username: String,
-		password: String
+		username: string,
+		password: string
 	): Promise<User> {
 		try {
-			const retrievedUser = await HttpClient.post('/users', false, {
-				username: username,
-				password: password,
+			const retrievedUser = await HttpClient.post({
+				path: '/users',
+				authorized: false,
+				body: {
+					username: username,
+					password: password,
+				},
 			}).then((res) => {
 				return userFromUserResponseObject(res.data as UserResponse);
 			});
@@ -21,13 +25,17 @@ class UserAPIService {
 	}
 
 	public async loginUser(
-		username: String,
-		password: String
-	): Promise<{token: string}> {
+		username: string,
+		password: string
+	): Promise<{ token: string }> {
 		try {
-			const response = await HttpClient.post('/tokens', false, {
-				username: username,
-				password: password,
+			const response = await HttpClient.post({
+				path: '/tokens',
+				authorized: false,
+				body: {
+					username: username,
+					password: password,
+				},
 			});
 
 			const token = response.data['token'];
