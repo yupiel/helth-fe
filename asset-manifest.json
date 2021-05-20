@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/helth-fe/static/css/main.49d28152.chunk.css",
-    "main.js": "/helth-fe/static/js/main.74f01298.chunk.js",
-    "main.js.map": "/helth-fe/static/js/main.74f01298.chunk.js.map",
+    "main.js": "/helth-fe/static/js/main.1e19ead9.chunk.js",
+    "main.js.map": "/helth-fe/static/js/main.1e19ead9.chunk.js.map",
     "runtime-main.js": "/helth-fe/static/js/runtime-main.3157b6f4.js",
     "runtime-main.js.map": "/helth-fe/static/js/runtime-main.3157b6f4.js.map",
     "static/css/2.a1596f27.chunk.css": "/helth-fe/static/css/2.a1596f27.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.a1596f27.chunk.css",
     "static/js/2.f79ccc16.chunk.js",
     "static/css/main.49d28152.chunk.css",
-    "static/js/main.74f01298.chunk.js"
+    "static/js/main.1e19ead9.chunk.js"
   ]
 }
