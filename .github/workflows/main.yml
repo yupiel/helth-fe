@@ -31,13 +31,13 @@ jobs:
               run: npm run build
 
             # Push to Separate Branch for Pages
-            - name: Push git subdirectory as branch
-              uses: s0/git-publish-subdir-action@v2.4.0
-              env:
-                  REPO: self
-                  BRANCH: gh-pages
-                  FOLDER: build
-                  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            #- name: Push git subdirectory as branch
+            #  uses: s0/git-publish-subdir-action@v2.4.0
+            #  env:
+            #      REPO: self
+            #      BRANCH: gh-pages
+            #      FOLDER: build
+            #      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
             - name: Docker Build & Push to GitHub Package
               uses: opspresso/action-docker@v0.2.17

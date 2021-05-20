@@ -1,6 +1,6 @@
 {
 	"name": "helth-fe",
-	"homepage": "https://yupiel.github.io/helth-fe/",
+	"homepage": "./",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
