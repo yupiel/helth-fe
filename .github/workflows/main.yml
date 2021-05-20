@@ -38,3 +38,16 @@ jobs:
                   BRANCH: gh-pages
                   FOLDER: build
                   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+            - name: Docker Build & Push to GitHub Package
+              uses: opspresso/action-docker@v0.2.17
+              with:
+                args: --docker
+              env:
+                USERNAME: yupiel
+                PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+                REGISTRY: docker.pkg.github.com
+                DOCKERFILE: Dockerfile
+                IMAGE_NAME: helth_frontend
+                TAG_NAME: latest
+                LATEST: true
