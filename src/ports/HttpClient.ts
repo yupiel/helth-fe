@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 class HttpClient {
 	private apiClient: AxiosInstance = axios.create({
-		baseURL: 'http://localhost:8080/api',
+		baseURL: '/api',
 		headers: {
 			'Content-Type': 'application/json',
 		},
