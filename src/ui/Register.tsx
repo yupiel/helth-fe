@@ -23,19 +23,18 @@ class Register extends React.Component<RegisterProps> {
 	private submitHandler(event: React.SyntheticEvent): void {
 		event.preventDefault();
 
-		UserAPIService.registerUser(
-			this.state.username,
-			this.state.password
-		).then((user) => {
-			if (user !== undefined && user.id !== undefined) {
-				createToast('Successfully Registered', 'is-success');
+		UserAPIService.registerUser(this.state.username, this.state.password)
+			.then((user) => {
+				if (user !== undefined && user.id !== undefined) {
+					createToast('Successfully Registered', 'is-success');
 
-				//redirect to login page on successful register
-				this.props.history.push('/login');
-			} else {
+					//redirect to login page on successful register
+					this.props.history.push('/login');
+				}
+			})
+			.catch(() => {
 				createToast('Registration failed', 'is-danger');
-			}
-		});
+			});
 	}
 
 	render() {

@@ -23,20 +23,20 @@ class Login extends Component<LoginProps> {
 	private submitHandler(event: React.SyntheticEvent): void {
 		event.preventDefault();
 
-		UserAPIService.loginUser(this.state.username, this.state.password).then(
-			(responseMessage) => {
+		UserAPIService.loginUser(this.state.username, this.state.password)
+			.then((responseMessage) => {
 				if (responseMessage !== undefined) {
 					if (responseMessage.token !== '') {
 						createToast('Successfully Logged in', 'is-success');
 
 						//redirect on successful login
 						this.props.history.push('/');
-					} else {
-						createToast('Login failed', 'is-danger');
 					}
 				}
-			}
-		);
+			})
+			.catch(() => {
+				createToast('Login failed', 'is-danger');
+			});
 	}
 
 	render() {
