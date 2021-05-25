@@ -51,3 +51,15 @@ jobs:
                 IMAGE_NAME: helth_frontend
                 TAG_NAME: latest
                 LATEST: true
+            
+            - name: Docker Build & Push to Docker Hub
+              uses: opspresso/action-docker@master
+              with:
+                args: --docker
+              env:
+                USERNAME: ${{ secrets.DOCKER_USERNAME }}
+                PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+                DOCKERFILE: Dockerfile
+                IMAGE_NAME: yupiel/helth-frontend
+                TAG_NAME: latest
+                LATEST: true
