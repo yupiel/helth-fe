@@ -32,6 +32,8 @@ class Register extends React.Component<RegisterProps> {
 
 				//redirect to login page on successful register
 				this.props.history.push('/login');
+			} else {
+				createToast('Registration failed', 'is-danger');
 			}
 		});
 	}
