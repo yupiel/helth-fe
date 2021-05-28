@@ -163,7 +163,8 @@ class NewChallengeDialogue extends Component<
 									onChange={this.handleNewChallengeActivityTypeChange.bind(
 										this
 									)}
-									data-testid='challenge_add_dialogue_type_dropdown'>
+									data-testid='challenge_add_dialogue_type_dropdown'
+									data-cy='challenge-add-dialogue-type'>
 									<option
 										key='type_DEFAULT'
 										value='DEFAULT'
@@ -191,6 +192,7 @@ class NewChallengeDialogue extends Component<
 									placeholder='max. 21'
 									required={true}
 									data-testid='challenge_add_dialogue_weely_goal'
+									data-cy='challenge-add-dialogue-goal'
 									onChange={this.handleNewChallengeWeeklyGoalChange.bind(
 										this
 									)}></input>
@@ -209,6 +211,7 @@ class NewChallengeDialogue extends Component<
 									type='number'
 									min='1'
 									name='new_challenge_amount_of_weeks'
+									data-cy='challenge-add-dialogue-weeks'
 									required={true}
 									onChange={this.handleNewChallengeAmountOfWeeksChange.bind(
 										this
@@ -218,6 +221,7 @@ class NewChallengeDialogue extends Component<
 
 						<input
 							className='button is-link mt-5'
+							data-cy='challenge-add-dialogue-submit'
 							type='submit'
 							value='Submit'></input>
 					</form>
@@ -229,7 +233,8 @@ class NewChallengeDialogue extends Component<
 							this
 						)}
 						className='button is-dark is-medium'
-						data-testid='challenge_add_button'>
+						data-testid='challenge_add_button'
+						data-cy='new-challenge-dialogue-add'>
 						{this.state.newChallengeDialogueButtonText}
 					</button>
 				</div>

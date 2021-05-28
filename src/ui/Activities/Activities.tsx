@@ -36,9 +36,13 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 		ActivityAPIService.getAllActivitiesForUserBetweenDates(
 			eachDayOfWeekCurrent[0],
 			eachDayOfWeekCurrent[eachDayOfWeekCurrent.length - 1]
-		).then((activities) => {
-			this.setState({ activities: activities });
-		});
+		)
+			.then((activities) => {
+				this.setState({ activities: activities });
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	}
 
 	private createDayClustersForActivitiesInWeekForStateCurrentDate() {
@@ -98,14 +102,17 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 				<div className='columns is-centered'>
 					<div
 						className='column is-two-fifths'
-						data-testid='activities_list'>
+						data-testid='activities_list'
+						data-cy='activities-list'>
 						<p className='title is-1'>
 							{`${getYear(this.state.currentDate)}`}
 						</p>
 						<div className='is-flex is-flex-direction-row'>
 							<button
 								className='button is-justify-content-start'
-								onClick={this.toggleCalendarVisibility.bind(this)}>
+								onClick={this.toggleCalendarVisibility.bind(
+									this
+								)}>
 								{`CW ${getWeek(this.state.currentDate, {
 									weekStartsOn: 1,
 								})}`}

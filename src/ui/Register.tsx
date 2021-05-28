@@ -53,6 +53,7 @@ class Register extends React.Component<RegisterProps> {
 								<div className='control'>
 									<input
 										className='input'
+										data-cy='username'
 										type='text'
 										name='username'
 										onChange={this.changeHandler.bind(this)}
@@ -68,6 +69,7 @@ class Register extends React.Component<RegisterProps> {
 								<div className='control'>
 									<input
 										className='input'
+										data-cy='password'
 										type='password'
 										name='password'
 										placeholder='min. 8 characters'
@@ -86,6 +88,7 @@ class Register extends React.Component<RegisterProps> {
 									</div>
 									<input
 										className='level-right button is-link mt-5'
+										data-cy='submit'
 										type='submit'
 										value='Submit'></input>
 								</div>

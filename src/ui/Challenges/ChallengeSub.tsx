@@ -25,7 +25,8 @@ class ChallengeSub extends Component<Challenge> {
 			<div className='field row'>
 				<div
 					className={`box is-grouped level ${this.getColorCSSClassForChallengeStatus()}`}
-					data-testid='challenge_entry'>
+					data-testid='challenge_entry'
+					data-cy='challenge-entry'>
 					<div className='level-left'>
 						<ActivityIcon {...this.props.activityType} />
 						<p

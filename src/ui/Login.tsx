@@ -55,6 +55,7 @@ class Login extends Component<LoginProps> {
 								<div className='control'>
 									<input
 										className='input'
+										data-cy='username'
 										type='text'
 										name='username'
 										onChange={this.changeHandler.bind(this)}
@@ -70,6 +71,7 @@ class Login extends Component<LoginProps> {
 								<div className='control'>
 									<input
 										className='input'
+										data-cy='password'
 										type='password'
 										name='password'
 										onChange={this.changeHandler.bind(this)}
@@ -88,6 +90,7 @@ class Login extends Component<LoginProps> {
 								</div>
 								<input
 									className='level-right button is-link mt-5'
+									data-cy='submit'
 									type='submit'
 									value='Submit'></input>
 							</div>

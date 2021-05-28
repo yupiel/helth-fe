@@ -94,6 +94,7 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 							<select
 								name='activity_type'
 								data-testid='activity_add_dialogue_type_dropdown'
+								data-cy='new-activity-dialogue-type'
 								onChange={this.handleSelectDropDownChange.bind(
 									this
 								)}
@@ -110,6 +111,7 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 						<input
 							className='button is-link'
 							data-testid='activity_add_dialogue_submit_button'
+							data-cy='new-activity-dialogue-submit'
 							type='submit'
 							value='Submit'></input>
 					</form>
@@ -119,6 +121,7 @@ class NewActivityDialogue extends Component<NewActivityDialogueProps> {
 						this
 					)}
 					data-testid='activity_add_button'
+					data-cy='new-activity-dialogue-add'
 					className='button is-dark is-medium is-align-self-flex-end mb-5 mr-5 ml-5'>
 					{this.state.newActivityDialogueButtonText}
 				</button>

@@ -5,15 +5,20 @@ import ActivityIcon from '../ActivityIcon';
 class ActivitySub extends Component<Activity> {
 	render() {
 		return (
-			<div className='field row' data-testid='activity_entry'>
+			<div
+				className='field row'
+				data-testid='activity_entry'
+				data-cy='activity-entry'>
 				<div className='box level is-grouped'>
 					<div className='level-left'>
 						<ActivityIcon {...this.props.activityType} />
-						
-						<p className='title is-5 ml-3' data-testid='activity_entry_type'>
+
+						<p
+							className='title is-5 ml-3'
+							data-testid='activity_entry_type'>
 							{this.props.activityType.typeDescriptionPast}
 						</p>
-						</div>
+					</div>
 					<button className='level-right button is-danger'>-</button>
 				</div>
 			</div>

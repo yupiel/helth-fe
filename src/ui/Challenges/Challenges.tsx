@@ -89,7 +89,8 @@ class Challenges extends Component<
 				<div className='columns is-centered'>
 					<div
 						className='column is-two-fifths'
-						data-testid='challenges_list'>
+						data-testid='challenges_list'
+						data-cy='challenges-list'>
 						<div className='level'>
 							<p className='title is-1 level-left'>
 								{this.state.currentDate.getFullYear()}

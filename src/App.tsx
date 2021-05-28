@@ -11,7 +11,6 @@ import { HashRouter, Switch } from 'react-router-dom';
 function App() {
 	return (
 		<HashRouter basename={process.env.PUBLIC_URL}>
-			<div id='toast-container' />
 			<Switch>
 				<PublicRoute exact path='/register' component={Register} />
 				<PublicRoute exact path='/login' component={Login} />
