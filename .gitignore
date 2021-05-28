@@ -76,3 +76,8 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+/cypress/examples
+/cypress/integration/examples
+/cypress/videos
+/cypress/screenshots

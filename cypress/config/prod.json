@@ -1,0 +1,6 @@
+{
+    "baseUrl": "https://yupiel.xyz",
+    "env": {
+        "something": "prod"
+    }
+}

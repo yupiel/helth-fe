@@ -15,7 +15,7 @@ context('Register', () => {
 	const cypressUsername = `cypress-${makeid(10)}`;
 
 	it('user can register and login with correct length username and password and gets redirected properly', () => {
-		cy.visit('http://localhost:3000/#/register');
+		cy.visit('/#/./register');
 
 		cy.get('[data-cy=username]')
 			.type(cypressUsername)
@@ -28,7 +28,7 @@ context('Register', () => {
 		cy.get('[data-cy=submit]').click();
 		//REGISTER END
 
-		cy.url().should('eq', 'http://localhost:3000/#/login');
+		cy.url().should('eq',  Cypress.config().baseUrl + '/#/./login');
 
 		cy.get('[data-cy=username]')
 			.type(cypressUsername)
@@ -41,13 +41,13 @@ context('Register', () => {
 		cy.get('[data-cy=submit]').click();
 		//LOGIN END
 
-		cy.url().should('eq', 'http://localhost:3000/#/');
+		cy.url().should('eq',  Cypress.config().baseUrl + '/#/./');
 		//HOMEPAGE END
 	});
 
 	it('user can not register because the username is in use and gets an error message', () => {
-		cy.visit('http://localhost:3000/#/register');
-		cy.url().should('eq', 'http://localhost:3000/#/register');
+		cy.visit('/#/./register');
+		cy.url().should('eq',  Cypress.config().baseUrl + '/#/./register');
 
 		cy.get('[data-cy=username]')
 			.type(cypressUsername)
@@ -63,13 +63,13 @@ context('Register', () => {
 			.should('have.class', 'is-danger')
 			.should('exist');
 
-		cy.url().should('not.eq', 'http://localhost:3000/#/login');
-		cy.url().should('eq', 'http://localhost:3000/#/register');
+		cy.url().should('not.eq', '/#/./login');
+		cy.url().should('eq',  Cypress.config().baseUrl + '/#/./register');
 	});
 
 	it('user can register but gets an error message when logging in with incorrect password and does not get redirected', () => {
-		cy.visit('http://localhost:3000/#/register');
-		cy.url().should('eq', 'http://localhost:3000/#/register');
+		cy.visit('/#/./register');
+		cy.url().should('eq',  Cypress.config().baseUrl + '/#/./register');
 
 		const negativeCaseUser = `cypress-${makeid(10)}`;
 
@@ -83,7 +83,7 @@ context('Register', () => {
 
 		cy.get('[data-cy=submit]').click();
 
-		cy.url().should('eq', 'http://localhost:3000/#/login');
+		cy.url().should('eq',  Cypress.config().baseUrl + '/#/./login');
 
 		cy.get('[data-cy=username]')
 			.type(negativeCaseUser)
@@ -99,12 +99,12 @@ context('Register', () => {
 			.should('have.class', 'is-danger')
 			.should('exist');
 
-		cy.url().should('not.eq', 'http://localhost:3000/#/');
-		cy.url().should('eq', 'http://localhost:3000/#/login');
+		cy.url().should('not.eq', '/#/./');
+		cy.url().should('eq',  Cypress.config().baseUrl + '/#/./login');
 	});
 
 	it('create new activity of every type that should add to the activity list on the homepage', () => {
-		cy.visit('http://localhost:3000/#/login');
+		cy.visit('/#/./login');
 
 		cy.get('[data-cy=username]')
 			.type(cypressUsername)
@@ -116,7 +116,7 @@ context('Register', () => {
 
 		cy.get('[data-cy=submit]').click();
 
-		cy.url().should('eq', 'http://localhost:3000/#/');
+		cy.url().should('eq',  Cypress.config().baseUrl + '/#/./');
 
 		const fillFormAndSubmit = (type: string) => {
 			cy.get('[data-cy=new-activity-dialogue-type]').select(type);
@@ -140,8 +140,8 @@ context('Register', () => {
 	});
 
 	it('create new challenge for each type of activity and check if it is set in progress', () => {
-		cy.visit('http://localhost:3000/#/login');
-		cy.url().should('eq', 'http://localhost:3000/#/login');
+		cy.visit('/#/./login');
+		cy.url().should('eq', Cypress.config().baseUrl + '/#/./login');
 
 		cy.get('[data-cy=username]')
 			.type(cypressUsername)
@@ -153,10 +153,10 @@ context('Register', () => {
 
 		cy.get('[data-cy=submit]').click();
 
-		cy.url().should('eq', 'http://localhost:3000/#/');
+		cy.url().should('eq', Cypress.config().baseUrl + '/#/./');
 
-		cy.visit('http://localhost:3000/#/challenges');
-		cy.url().should('eq', 'http://localhost:3000/#/challenges');
+		cy.visit('/#/./challenges');
+		cy.url().should('eq', Cypress.config().baseUrl + '/#/./challenges');
 
 		const fillFormAndSubmit = (
 			type: string,

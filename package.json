@@ -33,7 +33,7 @@
 		"predeploy": "npm run build",
 		"deploy": "gh-pages -d build",
 		"sonar": "node sonar-project.js",
-		"cypress": "cypress open"
+		"cypress": "cypress run"
 	},
 	"eslintConfig": {
 		"extends": [

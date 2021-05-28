@@ -42,31 +42,54 @@ jobs:
             - name: Docker Build & Push to GitHub Package
               uses: opspresso/action-docker@v0.2.17
               with:
-                args: --docker
+                  args: --docker
               env:
-                USERNAME: yupiel
-                PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-                REGISTRY: docker.pkg.github.com
-                DOCKERFILE: Dockerfile
-                IMAGE_NAME: helth_frontend
-                TAG_NAME: latest
-                LATEST: true
-            
+                  USERNAME: yupiel
+                  PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+                  REGISTRY: docker.pkg.github.com
+                  DOCKERFILE: Dockerfile
+                  IMAGE_NAME: helth_frontend
+                  TAG_NAME: latest
+                  LATEST: true
+
             - name: Docker Build & Push to Docker Hub
               uses: opspresso/action-docker@master
               with:
-                args: --docker
+                  args: --docker
               env:
-                USERNAME: ${{ secrets.DOCKER_USERNAME }}
-                PASSWORD: ${{ secrets.DOCKER_TOKEN }}
-                DOCKERFILE: Dockerfile
-                IMAGE_NAME: yupiel/helth-frontend
-                TAG_NAME: latest
-                LATEST: true
+                  USERNAME: ${{ secrets.DOCKER_USERNAME }}
+                  PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+                  DOCKERFILE: Dockerfile
+                  IMAGE_NAME: yupiel/helth-frontend
+                  TAG_NAME: latest
+                  LATEST: true
 
             - name: Dispatch Update Frontend Event
               uses: peter-evans/repository-dispatch@v1
               with:
-                token: ${{ secrets.REPO_ACCESS_TOKEN }}
-                repository: yupiel/helth-deploy
-                event-type: update-frontend
+                  token: ${{ secrets.REPO_ACCESS_TOKEN }}
+                  repository: yupiel/helth-deploy
+                  event-type: update-frontend
+
+    integration_tests:
+        needs: build
+        name: Run Cypress tests against production
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Use Node.js 15.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: '15.x'
+
+            - name: Install modules
+              run: npm install
+
+            - name: Wait for a minute to let the helthstack die
+              uses: jakejarvis/wait-action@master
+              with:
+                  time: '5m'
+
+            - name: Run Cypress tests
+              run: npm run cypress -- --env configFile=prod
