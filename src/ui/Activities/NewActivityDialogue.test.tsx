@@ -106,14 +106,10 @@ describe('NewActivityDialogue', () => {
 			testActivity
 		);
 
-		const dropdownOptions = await waitFor(() =>
-			screen.getAllByTestId('activity_add_dialogue_type_dropdown_option')
-		);
 		const dialogueSubmitButton = await waitFor(() =>
 			screen.getByTestId('activity_add_dialogue_submit_button')
 		);
 
-		dropdownOptions[0].click();
 		dialogueSubmitButton.click();
 
 		expect(mockedCall).not.toHaveBeenCalled();

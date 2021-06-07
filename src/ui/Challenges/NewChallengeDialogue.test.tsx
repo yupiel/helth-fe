@@ -1,5 +1,7 @@
 import {
+	act,
 	cleanup,
+	fireEvent,
 	render,
 	screen,
 	waitFor,
@@ -8,6 +10,9 @@ import '@testing-library/jest-dom';
 import { ActivityTypes } from '../../domain/ActivityType';
 import NewChallengeDialogue from './NewChallengeDialogue';
 import ChallengeAPIService from '../../ports/ChallengeAPIService';
+import { Challenge } from '../../domain/Challenge';
+import { ChallengeStatuses } from '../../domain/ChallengeStatus';
+import { addWeeks } from 'date-fns';
 
 describe('NewChallengeDialogue', () => {
 	afterEach(() => cleanup());
@@ -61,47 +66,57 @@ describe('NewChallengeDialogue', () => {
 		}
 	});
 
-	test('components weekly goal should update in UI when entering a new number', async () => {
-		render(
-			<NewChallengeDialogue
-				updateListFunction={mockedParentUpdateFunction}
-			/>
-		);
-
-		const weeklyGoalBefore = await waitFor(() =>
-			screen.getByTestId('challenge_add_dialogue_weely_goal')
-		);
-		expect(weeklyGoalBefore.getAttribute('value')).toBeNull();
-
-		weeklyGoalBefore.setAttribute('value', '3');
-
-		const weeklyGoalAfter = await waitFor(() =>
-			screen.getByTestId('challenge_add_dialogue_weely_goal')
-		);
-
-		expect(weeklyGoalAfter.getAttribute('value')).toEqual('3');
-	}); //TODO Remove
-
-	test.skip('component should call ChallengeAPIService when add-buttonm is pressed with valid parameters', async () => {
+	test('component should call ChallengeAPIService when add-button is pressed with valid parameters', async () => {
 		render(
 			<NewChallengeDialogue
 				updateListFunction={mockedParentUpdateFunction}
 			/>
 		);
 		
-		const mockedCall = challengeAPIService_getAllChallengesForUserBetweenDatesMock();
+		const mockedCall = challengeAPIService_saveNewChallengeForUserResolves(testChallenge);
 
-		const dropdownOptions = await waitFor(() =>
-			screen.getByTestId('challenge_add_dialogue_type_dropdown_option')
+		const dropdownObject = await waitFor(() =>
+			screen.getByTestId('challenge_add_dialogue_type_dropdown')
+		);		
+		const weeklyGoalAmount = await waitFor(() => 
+			screen.getByTestId('challenge_add_dialogue_weekly_goal')
 		);
-		
-	})
+		const weekAmount = await waitFor(() => 
+			screen.getByTestId('challenge_add_dialogue_week_amount')
+		);
+		const dialogueSubmitButton = await waitFor(() =>
+			screen.getByTestId('challenge_add_dialogue_submit_button')
+		);
+
+		fireEvent.change(dropdownObject, { target: { value: 'DRINK_WATER' } });
+		fireEvent.change(weeklyGoalAmount, { target: { value: '2' } });
+		fireEvent.change(weekAmount, { target: { value: '2' } });
+		await act(async () => {
+			fireEvent.click(dialogueSubmitButton);
+		});
+
+		expect(mockedCall).toHaveBeenCalled();
+		expect(mockedParentUpdateFunction).toHaveBeenCalled();
+	});
 });
 
-const mockedParentUpdateFunction = () => jest.fn();
+const testChallenge = {
+	id: 'very cool id',
+	activityType: ActivityTypes['RUNNING'],
+	timesAWeekGoal: 4,
+	timesAWeekCurrent: 2,
+	startDate: new Date('2021-05-10'),
+	expirationDate: addWeeks(new Date('2021-05-10'), 1),
+	challengeStatus: ChallengeStatuses['IN_PROGRESS'],
+	userID: 'very cool user id',
+} as Challenge
 
-function challengeAPIService_getAllChallengesForUserBetweenDatesMock() {
+const mockedParentUpdateFunction = jest.fn();
+
+function challengeAPIService_saveNewChallengeForUserResolves(
+	returnData: Challenge
+) {
 	return jest
-	.spyOn(ChallengeAPIService, 'getAllChallengesForUserBetweenDates')
-	.mockResolvedValue([]);
+		.spyOn(ChallengeAPIService, 'saveNewChallengeForUser')
+		.mockResolvedValue(returnData);
 }

@@ -105,6 +105,7 @@ class NewChallengeDialogue extends Component<
 				this.state.currentNewChallengeFormSelections.amountOfWeeks
 			)
 		) {
+			console.error(`Type: ${this.state.currentNewChallengeFormSelections.activityType} \nWeekly Goal: ${this.state.currentNewChallengeFormSelections.weeklyGoal} \nWeek Amount:${this.state.currentNewChallengeFormSelections.amountOfWeeks}`);
 			return;
 		}
 
@@ -191,7 +192,7 @@ class NewChallengeDialogue extends Component<
 									name='new_challenge_weekly_goal'
 									placeholder='max. 21'
 									required={true}
-									data-testid='challenge_add_dialogue_weely_goal'
+									data-testid='challenge_add_dialogue_weekly_goal'
 									data-cy='challenge-add-dialogue-goal'
 									onChange={this.handleNewChallengeWeeklyGoalChange.bind(
 										this
@@ -211,6 +212,7 @@ class NewChallengeDialogue extends Component<
 									type='number'
 									min='1'
 									name='new_challenge_amount_of_weeks'
+									data-testid='challenge_add_dialogue_week_amount'
 									data-cy='challenge-add-dialogue-weeks'
 									required={true}
 									onChange={this.handleNewChallengeAmountOfWeeksChange.bind(
@@ -221,6 +223,7 @@ class NewChallengeDialogue extends Component<
 
 						<input
 							className='button is-link mt-5'
+							data-testid='challenge_add_dialogue_submit_button'
 							data-cy='challenge-add-dialogue-submit'
 							type='submit'
 							value='Submit'></input>

@@ -24,7 +24,7 @@ describe('UserAPIService', () => {
 		expect(mockedCall).toHaveBeenCalled();
 		expect(requestResponse.username).toEqual('yupiel');
 		expect(requestResponse.creationDate.toString()).toEqual(
-			new Date().toString()
+			new Date('2021-06-07').toString()
 		);
 	});
 	test('registerUser rejects user data and handles rejection without throwing error', async () => {
@@ -89,7 +89,7 @@ const responseUserDataInfo: User = {
 	id: '954d1f23-17a8-4331-82d6-c200fcc7f800',
 	username: 'yupiel',
 	score: '9999999999999999999999999999999999999999999999',
-	creationDate: new Date(),
+	creationDate: new Date('2021-06-07'),
 };
 
 const responseTokenDataInfo: Object = {

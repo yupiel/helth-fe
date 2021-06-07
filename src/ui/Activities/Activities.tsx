@@ -6,6 +6,7 @@ import { Component } from 'react';
 import { eachDayOfWeekForDate } from '../../common/DateUtils';
 import NewActivityDialogue from './NewActivityDialogue';
 import Calendar from 'react-calendar';
+import { createToast } from '../../common/Toaster';
 
 interface ActivitiesComponentStates {
 	currentDate: Date;
@@ -41,7 +42,7 @@ class Activities extends Component<{}, ActivitiesComponentStates> {
 				this.setState({ activities: activities });
 			})
 			.catch((err) => {
-				console.error(err);
+				createToast('Fetching of Activities failed', 'is-danger');
 			});
 	}
 
