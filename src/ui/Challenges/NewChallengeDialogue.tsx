@@ -105,7 +105,6 @@ class NewChallengeDialogue extends Component<
 				this.state.currentNewChallengeFormSelections.amountOfWeeks
 			)
 		) {
-			console.error(`Type: ${this.state.currentNewChallengeFormSelections.activityType} \nWeekly Goal: ${this.state.currentNewChallengeFormSelections.weeklyGoal} \nWeek Amount:${this.state.currentNewChallengeFormSelections.amountOfWeeks}`);
 			return;
 		}
 
